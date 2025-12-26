@@ -122,31 +122,56 @@ global-lung-cancer-analysis/
 
 ### Prerequisites
 
+- **Python 3.8+** (Python 3.12 recommended)
+- **pip** (Python package manager)
+
+### Quick Setup (Automated)
+
+Run the automated setup script to create a virtual environment and install all dependencies:
+
 ```bash
-Python 3.12+
-pip (Python package manager)
+# Make the script executable (first time only)
+chmod +x setup.sh
+
+# Run the setup script
+./setup.sh
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Launch Jupyter Notebook
+jupyter notebook notebooks/LungCancer-Analysis.ipynb
 ```
 
-### Installation
+### Manual Setup
 
-1. **Clone the repository**
+If you prefer manual installation:
+
+1. **Create a virtual environment** (recommended)
 
    ```bash
-   git clone https://github.com/sanaullah-turab/global-lung-cancer-analysis.git
-   cd global-lung-cancer-analysis
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-2. **Install required packages**
+2. **Install dependencies**
 
    ```bash
-   pip install pandas numpy matplotlib seaborn scikit-learn scipy jupyter
+   pip install -r requirements.txt
    ```
 
 3. **Launch Jupyter Notebook**
    ```bash
-   cd notebooks
-   jupyter notebook LungCancer-Analysis.ipynb
+   jupyter notebook notebooks/LungCancer-Analysis.ipynb
    ```
+
+### Deactivating Virtual Environment
+
+When you're done working:
+
+```bash
+deactivate
+```
 
 ---
 
