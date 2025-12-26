@@ -25,5 +25,17 @@ Desktop.ini
 *.pyc
 __pycache__/
 
+# C++ executables (no extension)
+question*_graph_representation
+question*_clique_detection
+question*_prime_graph_dijkstra
+*_graph_representation
+*_clique_detection
+*_prime_graph_dijkstra
+
+# Code Runner temporary files
+tempCodeRunnerFile
+tempCodeRunnerFile.*
+
 # Logs
 *.log
