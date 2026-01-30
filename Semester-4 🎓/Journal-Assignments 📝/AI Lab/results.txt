@@ -1,0 +1,12 @@
+Student ID: 2
+Name: Uzair
+Total Marks: 234
+Average Marks: 78.0
+Grade: B
+------------------------------
+Student ID: 2
+Name: Saad
+Total Marks: 191
+Average Marks: 63.666666666666664
+Grade: C
+------------------------------
