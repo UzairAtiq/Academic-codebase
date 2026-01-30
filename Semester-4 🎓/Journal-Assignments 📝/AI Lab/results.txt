@@ -1,12 +1,30 @@
 Student ID: 1
 Name: Uzair
-Total Marks: 157
-Average Marks: 52.333333333333336
-Grade: C
+Total Marks: 278
+Average Marks: 92.67
+Grade: A
+------------------------------
+Student ID: 2
+Name: Laiba
+Total Marks: 210
+Average Marks: 70.00
+Grade: B
 ------------------------------
 Student ID: 3
-Name: 56
-Total Marks: 212
-Average Marks: 70.66666666666667
+Name: Saaad
+Total Marks: 137
+Average Marks: 45.67
+Grade: F
+------------------------------
+Student ID: 4
+Name: rameen
+Total Marks: 254
+Average Marks: 84.67
+Grade: B
+------------------------------
+Student ID: 5
+Name: Yaseen
+Total Marks: 232
+Average Marks: 77.33
 Grade: B
 ------------------------------
