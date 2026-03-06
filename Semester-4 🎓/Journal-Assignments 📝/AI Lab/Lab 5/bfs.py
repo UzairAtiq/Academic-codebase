@@ -1,4 +1,5 @@
 from collections import deque
+
 maze = [
     [0, 0, 1, 0, 0, 0, 1, 0],
     [0, 0, 1, 0, 1, 0, 1, 0],
@@ -10,124 +11,75 @@ maze = [
     [1, 1, 1, 0, 0, 0, 1, 0]
 ]
 
-#Defining Start and Goal nodes
-startNode = (0, 0)
-goalNode = (7, 7)
-rows = 8
-cols = 8
+start = (0, 0)
+goal  = (7, 7)
 
 def displayMaze():
-    print("\n=== MAZE REPRESENTATION ===")
-    print("\nMaze Grid (0 = Free, 1 = Wall, S = Start, G = Goal):\n")
-    print("    ", end="")
-    for c in range(cols):
-        print(f"C{c}  ", end="")
-    print()
-    
-    for r in range(rows):
-        print(f"R{r}  ", end="")
-        for c in range(cols):
-            if (r, c) == startNode:
-                print("S   ", end="")
-            elif (r, c) == goalNode:
-                print("G   ", end="")
-            else:
-                print(f"{maze[r][c]}   ", end="")
+    print("\n========== MAZE ==========")
+    for r in range(8):
+        for c in range(8):
+            if   (r,c) == start: print("S", end=" ")
+            elif (r,c) == goal:  print("G", end=" ")
+            else:                print(maze[r][c], end=" ")
         print()
-    
-    print(f"\nStart Node: {startNode}")
-    print(f"Goal Node: {goalNode}")
+    print(f"Start: {start}  |  Goal: {goal}")
+    print("==========================")
 
-def getNeighbors(row, col):
-    neighbors = []
-    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-    
-    for dr, dc in directions:
-        newRow = row + dr
-        newCol = col + dc
-        
-        if 0 <= newRow < rows and 0 <= newCol < cols and maze[newRow][newCol] == 0:
-            neighbors.append((newRow, newCol))
-    
-    return neighbors
+def getNeighbors(r, c):
+    result = []
+    for dr, dc in [(-1,0),(1,0),(0,-1),(0,1)]:
+        nr, nc = r+dr, c+dc
+        if 0 <= nr < 8 and 0 <= nc < 8 and maze[nr][nc] == 0:
+            result.append((nr, nc))
+    return result
 
 def bfs():
-    queue = deque([startNode])
-    visited = {startNode}
-    parent = {startNode: None}
-    nodesExplored = []
-    
+    queue    = deque([start])
+    visited  = {start}
+    parent   = {start: None}
+    explored = []
+
     while queue:
-        currentNode = queue.popleft()
-        nodesExplored.append(currentNode)
-        
-        if currentNode == goalNode:
+        cell = queue.popleft()
+        explored.append(cell)
+
+        if cell == goal:
             path = []
-            node = goalNode
-            while node is not None:
-                path.append(node)
-                node = parent[node]
+            while cell is not None:
+                path.append(cell)
+                cell = parent[cell]
             path.reverse()
-            
-            return {
-                'pathFound': True,
-                'path': path,
-                'nodesExplored': nodesExplored,
-                'pathLength': len(path),
-                'totalNodesExplored': len(nodesExplored)
-            }
-        
-        row, col = currentNode
-        neighbors = getNeighbors(row, col)
-        
-        for neighbor in neighbors:
+            return path, explored
+
+        for neighbor in getNeighbors(cell[0], cell[1]):
             if neighbor not in visited:
                 visited.add(neighbor)
-                parent[neighbor] = currentNode
+                parent[neighbor] = cell
                 queue.append(neighbor)
-    
-    return {
-        'pathFound': False,
-        'path': [],
-        'nodesExplored': nodesExplored,
-        'pathLength': 0,
-        'totalNodesExplored': len(nodesExplored)
-    }
 
-def displayResults(result):
-    print("\n\n=== BFS RESULTS ===\n")
-    
-    if result['pathFound']:
-        print(f"Path Found: YES")
-        print(f"Path Length: {result['pathLength']}")
-        print(f"Total Nodes Explored: {result['totalNodesExplored']}")
-        
-        print(f"\nPath: ", end="")
-        for i, node in enumerate(result['path']):
-            if i < len(result['path']) - 1:
-                print(f"{node} -> ", end="")
-            else:
-                print(f"{node}")
-        
-        print(f"\nNodes Explored (in order):")
-        for i, node in enumerate(result['nodesExplored']):
-            print(f"{i+1}. {node}")
-        
-        print("\n\n=== BFS TABLE ENTRIES ===")
-        print(f"Algorithm: Breadth-First Search (BFS)")
-        print(f"Path Found: Yes")
-        print(f"Path Length: {result['pathLength']}")
-        print(f"Nodes Explored: {result['totalNodesExplored']}")
-        print(f"Solution Path: {' -> '.join([str(node) for node in result['path']])}")
-        
-    else:
-        print("Path Found: NO")
-        print(f"Total Nodes Explored: {result['totalNodesExplored']}")
+    return None, explored
 
-def main():
-    displayMaze()
-    result = bfs()
-    displayResults(result)
+# ---- run ----
+displayMaze()
+path, explored = bfs()
 
-if __name__ == "__main__":
-    main()
+print("\n========== BFS RESULTS ==========")
+if path:
+    print(f"Path Found    : YES")
+    print(f"Path Length   : {len(path)}")
+    print(f"Nodes Explored: {len(explored)}")
+    print(f"\n--- Path ---")
+    print(" -> ".join(str(c) for c in path))
+    print(f"\n--- Traversal Order ---")
+    for i, cell in enumerate(explored):
+        print(f"  {i+1}. {cell}")
+else:
+    print("Path Found    : NO")
+    print(f"Nodes Explored: {len(explored)}")
+
+print("\n========== BFS TABLE ==========")
+print(f"  Algorithm      : BFS")
+print(f"  Path Found     : {'Yes' if path else 'No'}")
+print(f"  Path Length    : {len(path) if path else 'N/A'}")
+print(f"  Nodes Explored : {len(explored)}")
+print("================================")
