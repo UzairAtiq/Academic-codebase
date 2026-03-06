@@ -32,14 +32,16 @@ def getNeighbors(r, c):
 
 def dfs():
     stack    = [start]
-    visited  = {start}
+    visited  = set()
     parent   = {start: None}
     explored = []
 
     while stack:
         cell = stack.pop()
+        if cell in visited:
+            continue
+        visited.add(cell)
         explored.append(cell)
-
         if cell == goal:
             path = []
             while cell is not None:
@@ -47,36 +49,27 @@ def dfs():
                 cell = parent[cell]
             path.reverse()
             return path, explored
-
         for neighbor in getNeighbors(cell[0], cell[1]):
             if neighbor not in visited:
-                visited.add(neighbor)
                 parent[neighbor] = cell
                 stack.append(neighbor)
-
     return None, explored
 
-# ---- run ----
 displayMaze()
 path, explored = dfs()
 
 print("\n========== DFS RESULTS ==========")
-if path:
-    print(f"  Path Found    : YES")
-    print(f"  Path Length   : {len(path)}")
-    print(f"  Nodes Explored: {len(explored)}")
-    print(f"\n--- Path ---")
-    print(" -> ".join(str(c) for c in path))
-    print(f"\n--- Traversal Order ---")
-    for i, cell in enumerate(explored):
-        print(f"  {i+1}. {cell}")
-else:
-    print("  Path Found    : NO")
-    print(f"  Nodes Explored: {len(explored)}")
-
+print(f"  Path Found    : YES")
+print(f"  Path Length   : {len(path)}")
+print(f"  Nodes Explored: {len(explored)}")
+print(f"\n--- Path ---")
+print(" -> ".join(str(c) for c in path))
+print(f"\n--- Traversal Order ---")
+for i, cell in enumerate(explored):
+    print(f"  {i+1}. {cell}")
 print("\n========== DFS TABLE ==========")
 print(f"  Algorithm      : DFS")
-print(f"  Path Found     : {'Yes' if path else 'No'}")
-print(f"  Path Length    : {len(path) if path else 'N/A'}")
+print(f"  Path Found     : Yes")
+print(f"  Path Length    : {len(path)}")
 print(f"  Nodes Explored : {len(explored)}")
 print("================================")

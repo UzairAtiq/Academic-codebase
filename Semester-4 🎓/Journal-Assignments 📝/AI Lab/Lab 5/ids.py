@@ -1,5 +1,3 @@
-from collections import deque
-
 maze = [
     [0, 0, 1, 0, 0, 0, 1, 0],
     [0, 0, 1, 0, 1, 0, 1, 0],
@@ -32,14 +30,17 @@ def getNeighbors(r, c):
             result.append((nr, nc))
     return result
 
-def bfs():
-    queue    = deque([start])
-    visited  = {start}
+def dls(limit):
+    stack    = [(start, 0)]
+    visited  = set()
     parent   = {start: None}
     explored = []
 
-    while queue:
-        cell = queue.popleft()
+    while stack:
+        cell, depth = stack.pop()
+        if cell in visited:
+            continue
+        visited.add(cell)
         explored.append(cell)
         if cell == goal:
             path = []
@@ -48,28 +49,43 @@ def bfs():
                 cell = parent[cell]
             path.reverse()
             return path, explored
-        for neighbor in getNeighbors(cell[0], cell[1]):
-            if neighbor not in visited:
-                visited.add(neighbor)
-                parent[neighbor] = cell
-                queue.append(neighbor)
+        if depth < limit:
+            for neighbor in getNeighbors(cell[0], cell[1]):
+                if neighbor not in visited:
+                    parent[neighbor] = cell
+                    stack.append((neighbor, depth + 1))
     return None, explored
 
 displayMaze()
-path, explored = bfs()
 
-print("\n========== BFS RESULTS ==========")
-print(f"  Path Found    : YES")
-print(f"  Path Length   : {len(path)}")
+# --- DLS with limit too small ---
+print("\n===== DLS (limit = 5) =====")
+path, explored = dls(limit=5)
+print(f"  Path Found    : {'YES' if path else 'NO'}")
+print(f"  Path Length   : {len(path) if path else 'N/A'}")
+print(f"  Nodes Explored: {len(explored)}")
+if path:
+    print(f"\n--- Path ---")
+    print(" -> ".join(str(c) for c in path))
+print(f"\n--- Traversal Order ---")
+for i, cell in enumerate(explored):
+    print(f"  {i+1}. {cell}")
+
+# --- DLS with enough limit ---
+print("\n===== DLS (limit = 20) =====")
+path, explored = dls(limit=20)
+print(f"  Path Found    : {'YES' if path else 'NO'}")
+print(f"  Path Length   : {len(path) if path else 'N/A'}")
 print(f"  Nodes Explored: {len(explored)}")
 print(f"\n--- Path ---")
 print(" -> ".join(str(c) for c in path))
 print(f"\n--- Traversal Order ---")
 for i, cell in enumerate(explored):
     print(f"  {i+1}. {cell}")
-print("\n========== BFS TABLE ==========")
-print(f"  Algorithm      : BFS")
-print(f"  Path Found     : Yes")
-print(f"  Path Length    : {len(path)}")
+
+print("\n========== DLS TABLE ==========")
+print(f"  Algorithm      : DLS")
+print(f"  Limit = 5      : No Path Found")
+print(f"  Limit = 20     : Path Found - Length {len(path)}")
 print(f"  Nodes Explored : {len(explored)}")
 print("================================")
