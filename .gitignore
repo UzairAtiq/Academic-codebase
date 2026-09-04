@@ -39,3 +39,6 @@ tempCodeRunnerFile.*
 
 # Logs
 *.log
+
+#CSV Files
+*.csv
