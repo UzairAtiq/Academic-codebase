@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lab Journal - Outlier Detection using Z-Score Method</title>
+<style>
+  @page {
+    size: A4;
+    margin: 16mm 18mm 16mm 18mm;
+    @bottom-center {
+      content: "Muhammad Uzair Attiq | 01-136242-029 | Page " counter(page);
+      font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #64748b;
+    }
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.42;
+    font-size: 9pt;
+  }
+
+  .header-block {
+    margin-bottom: 8px;
+  }
+  .student-name {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #0f172a;
+    margin-bottom: 2px;
+  }
+  .student-meta {
+    font-size: 8.5pt;
+    color: #334155;
+    margin-bottom: 2px;
+  }
+  .divider {
+    border: none;
+    border-top: 1.5px solid #0f2b5c;
+    margin: 6px 0 12px 0;
+  }
+
+  .journal-title {
+    text-align: center;
+    font-size: 15pt;
+    font-weight: bold;
+    color: #0f2b5c;
+    margin-bottom: 3px;
+  }
+  .journal-subtitle {
+    text-align: center;
+    font-size: 11.5pt;
+    font-weight: bold;
+    color: #1e293b;
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #0f2b5c;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    border-bottom: 0.5px solid #cbd5e1;
+    padding-bottom: 2px;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 9.8pt;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 6px;
+    text-align: justify;
+  }
+
+  ul, ol {
+    margin-top: 0;
+    margin-bottom: 6px;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 3px;
+    text-align: justify;
+  }
+
+  .formula-box {
+    text-align: center;
+    font-size: 14pt;
+    margin: 10px 0;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    page-break-inside: avoid;
+  }
+  .fraction {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 4px;
+  }
+  .numerator {
+    display: block;
+    border-bottom: 1.5px solid #1a1a1a;
+    padding-bottom: 2px;
+  }
+  .denominator {
+    display: block;
+    padding-top: 2px;
+  }
+
+  .code-block {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-family: Consolas, 'Courier New', Courier, monospace;
+    font-size: 7.2pt;
+    line-height: 1.25;
+    color: #0f172a;
+    margin-bottom: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    page-break-inside: avoid;
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 3px 0;
+    font-size: 8pt;
+    page-break-inside: avoid;
+  }
+  table.data-table th, table.data-table td {
+    border: 1px solid #cbd5e1;
+    padding: 3.5px 6px;
+    text-align: center;
+  }
+  table.data-table th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  table.data-table tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  .caption {
+    text-align: center;
+    font-size: 7.8pt;
+    font-style: italic;
+    color: #475569;
+    margin-top: 3px;
+    margin-bottom: 8px;
+    page-break-before: avoid;
+  }
+
+  .figure-container {
+    text-align: center;
+    margin: 6px 0;
+    page-break-inside: avoid;
+  }
+  .figure-container img {
+    max-width: 90%;
+    max-height: 165px;
+    height: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+  }
+
+  .figure-container-large img {
+    max-width: 90%;
+    max-height: 220px;
+    height: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .question-block {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+  .question-title {
+    font-weight: bold;
+    color: #0f2b5c;
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="header-block">
+  <div class="student-name">Muhammad Uzair Attiq</div>
+  <div class="student-meta"><strong>Enrollment No:</strong> 01-136242-029</div>
+  <div class="student-meta"><strong>Program / Section:</strong> BS Artificial Intelligence, BSAI-5A, Bahria University Islamabad</div>
+</div>
+<hr class="divider">
+
+<div class="journal-title">Lab Journal</div>
+<div class="journal-subtitle">Finding Outliers using Z-Score Method in Python</div>
+
+<h2>1. Objective</h2>
+<p>
+The objective of this laboratory experiment is to detect and eliminate anomalous observations from a dataset using the <strong>Z-Score method</strong>, which quantifies how many standard deviations an observation deviates from the arithmetic mean. In this laboratory study, the method is deployed on an institutional placement dataset comprising 1,000 student records, and the effects of trimming outliers on distribution contours and data dispersion are evaluated using kernel density histograms and quartile boxplots.
+</p>
+
+<h2>2. Theory</h2>
+<p>
+Outliers are empirical data points that deviate markedly from the remaining observations within a distribution. They frequently stem from measurement or transcription errors, sensor faults, or authentic but low-probability phenomena. In either circumstance, unhandled extreme values can distort parametric summary measures—most notably the mean and standard deviation—and compromise the reliability of downstream predictive and inferential models.
+</p>
+<p>
+The Z-score expresses the relative divergence of an observation from the mean normalized by the standard deviation:
+</p>
+
+<div class="formula-box">
+  Z = 
+  <span class="fraction">
+    <span class="numerator">X &minus; &mu;</span>
+    <span class="denominator">&sigma;</span>
+  </span>
+</div>
+
+<p>Where:</p>
+<ul>
+  <li><strong>X</strong> = individual observation value</li>
+  <li><strong>&mu;</strong> = mean of the dataset</li>
+  <li><strong>&sigma;</strong> = standard deviation of the dataset</li>
+</ul>
+
+<p>
+Under standard practice, an observation with <strong>|Z| &gt; 3</strong> is flagged as an outlier. This criterion assumes that the feature follows an approximately normal (Gaussian) distribution, where roughly 99.7% of all data points naturally fall within three standard deviations of the mean.
+</p>
+
+<h2>3. Tools & Libraries</h2>
+<ul>
+  <li>Python 3.x</li>
+  <li>Jupyter Notebook</li>
+  <li>Scientific Libraries: pandas, numpy, matplotlib, seaborn</li>
+</ul>
+<p>
+<em>Note:</em> Although statistical libraries such as <code>scipy.stats</code> offer prepackaged Z-score routines, the computational workflow in the accompanying notebook was vectorized directly with pandas (using sample mean and standard deviation), with seaborn layered over matplotlib for distribution plots.
+</p>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page-break"></div>
+
+<h2>4. Dataset</h2>
+<p>
+The analysis evaluates <code>placement.csv</code>, which contains 1,000 rows across 3 features: <code>cgpa</code> (student grade point average), <code>placement_exam_marks</code> (numerical score obtained on a placement examination), and <code>placed</code> (binary recruitment outcome: 1 = placed, 0 = not placed). The first five observations are displayed in Table 1.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>cgpa</th>
+      <th>placement_exam_marks</th>
+      <th>placed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>7.19</td><td>26.0</td><td>1</td></tr>
+    <tr><td>1</td><td>7.46</td><td>38.0</td><td>1</td></tr>
+    <tr><td>2</td><td>7.54</td><td>40.0</td><td>1</td></tr>
+    <tr><td>3</td><td>6.42</td><td>8.0</td><td>1</td></tr>
+    <tr><td>4</td><td>7.23</td><td>17.0</td><td>0</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 1: First five records of the dataset (df.head())</div>
+
+<h2>5. Procedure</h2>
+<ol>
+  <li>Import the required scientific libraries and ingest the placement dataset.</li>
+  <li>Explore the structural dimensions and calculate descriptive parametric statistics.</li>
+  <li>Visualize feature distributions and boxplots to inspect spread and skewness prior to cleaning.</li>
+  <li>Compute the standardized Z-score for the normally distributed <code>cgpa</code> feature.</li>
+  <li>Filter and isolate all student records where <code>|Z| &gt; 3</code>.</li>
+  <li>Remove these flagged outliers to produce a sanitized, trimmed dataset.</li>
+  <li>Compare the original and cleaned distributions side-by-side using histograms and boxplots.</li>
+</ol>
+
+<h2>6. Python Code Implementation</h2>
+
+<div class="code-block"># Step 1: Setup and data loading
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+dataset_path = '../../Datasets/placement.csv'
+try:
+    placement_df = pd.read_csv(dataset_path)
+except Exception:
+    placement_df = pd.read_csv('https://raw.githubusercontent.com/campusx-official/100-days-of-machine-learning/main/day42-outlier-removal-using-zscore/placement.csv')
+placement_df.head()</div>
+
+<div class="code-block"># Step 2: Initial data exploration
+print("Dataset dimensions (rows, columns):", placement_df.shape)
+placement_df.describe()</div>
+
+<div class="code-block"># Step 3: Visualizing distributions (before)
+plt.figure(figsize=(16, 5))
+plt.subplot(1, 2, 1)
+sns.histplot(placement_df['cgpa'], kde=True, color='tab:blue')
+plt.title("CGPA Distribution")
+
+plt.subplot(1, 2, 2)
+sns.histplot(placement_df['placement_exam_marks'], kde=True, color='tab:blue')
+plt.title("Placement Exam Marks Distribution")
+plt.show()</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page-break"></div>
+
+<div class="code-block">plt.figure(figsize=(16, 5))
+plt.subplot(1, 2, 1)
+sns.boxplot(x=placement_df['cgpa'], color='tab:blue')
+plt.title("CGPA Boxplot")
+
+plt.subplot(1, 2, 2)
+sns.boxplot(x=placement_df['placement_exam_marks'], color='tab:blue')
+plt.title("Placement Exam Marks Boxplot")
+plt.show()</div>
+
+<div class="code-block"># Step 4: Calculating Z-scores and identifying outliers
+cgpa_mean = placement_df['cgpa'].mean()
+cgpa_std = placement_df['cgpa'].std()
+placement_df['cgpa_zscore'] = (placement_df['cgpa'] - cgpa_mean) / cgpa_std
+
+flagged_outliers = placement_df[(placement_df['cgpa_zscore'] > 3) | (placement_df['cgpa_zscore'] < -3)]
+flagged_outliers</div>
+
+<div class="code-block"># Step 5: Removing outliers
+cleaned_df = placement_df[(placement_df['cgpa_zscore'] &lt; 3) & (placement_df['cgpa_zscore'] &gt; -3)].copy()
+print("Original shape:", placement_df.shape)
+print("New shape:", cleaned_df.shape)</div>
+
+<div class="code-block"># Step 6: Side-by-side comparison
+plt.figure(figsize=(16, 8))
+plt.subplot(2, 2, 1); sns.histplot(placement_df['cgpa'], kde=True, color='tab:blue'); plt.title("Original Distribution")
+plt.subplot(2, 2, 2); sns.boxplot(x=placement_df['cgpa'], color='tab:blue'); plt.title("Original Boxplot")
+plt.subplot(2, 2, 3); sns.histplot(cleaned_df['cgpa'], kde=True, color='tab:blue'); plt.title("Cleaned Distribution")
+plt.subplot(2, 2, 4); sns.boxplot(x=cleaned_df['cgpa'], color='tab:blue'); plt.title("Cleaned Boxplot")
+plt.tight_layout()
+plt.show()</div>
+
+<h2>7. Output and Analysis</h2>
+
+<h3>7.1 Initial Data Exploration</h3>
+<p>
+The dataset comprises 1,000 records across 3 features, giving dimensions of <code>(1000, 3)</code>. The descriptive statistics generated by <code>describe()</code> are detailed in Table 2.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Statistic</th>
+      <th>cgpa</th>
+      <th>placement_exam_marks</th>
+      <th>placed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>count</td><td>1000</td><td>1000</td><td>1000</td></tr>
+    <tr><td>mean</td><td>6.961</td><td>32.225</td><td>0.489</td></tr>
+    <tr><td>std</td><td>0.616</td><td>19.131</td><td>0.500</td></tr>
+    <tr><td>min</td><td>4.890</td><td>0.000</td><td>0</td></tr>
+    <tr><td>25%</td><td>6.550</td><td>17.000</td><td>0</td></tr>
+    <tr><td>50% (median)</td><td>6.960</td><td>28.000</td><td>0</td></tr>
+    <tr><td>75%</td><td>7.370</td><td>44.000</td><td>1</td></tr>
+    <tr><td>max</td><td>9.120</td><td>100.000</td><td>1</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 2: Summary statistics of the dataset attributes (df.describe())</div>
+
+<!-- ================= PAGE 4 ================= -->
+<div class="page-break"></div>
+
+<p>
+Two primary characteristics stand out from Table 2. First, for student <code>cgpa</code>, the mean (6.961) and median (6.960) are practically indistinguishable, which indicates an exceptionally symmetric, unimodal distribution. Second, for <code>placement_exam_marks</code>, the mean (32.225) is substantially higher than the median (28.000), while the maximum value (100.0) extends far beyond the 75th percentile (44.000), signaling a pronounced right-hand tail. The target feature <code>placed</code> displays an approximately balanced split, with 48.9% of candidates successfully recruited.
+</p>
+
+<h3>7.2 Distributions Before Outlier Removal</h3>
+
+<div class="figure-container">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/zscore_fig1_distributions.png" alt="Figure 1: Histograms with KDE">
+  <div class="caption">Figure 1: Histograms with KDE for CGPA and Placement Exam Marks (original data)</div>
+</div>
+
+<p>
+<strong>CGPA:</strong> As illustrated in Figure 1 (left), the CGPA attribute follows a smooth, symmetric bell curve centered closely around 7.0. The KDE fit aligns tightly with the underlying frequencies, fulfilling the approximate-normality requirement essential for valid Z-score evaluation. Only a handful of isolated bars appear at the extreme boundaries near 4.9 and 9.1.
+</p>
+<p>
+<strong>Placement exam marks:</strong> In contrast, Figure 1 (right) displays strong positive skewness. The vast majority of student scores concentrate between 10 and 45 marks, peaking between 18 and 20, with an extended tail tapering toward 100. Because the data violates the symmetry assumption, Z-score truncation is ill-suited here and was restricted exclusively to <code>cgpa</code>.
+</p>
+
+<div class="figure-container">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/zscore_fig2_boxplots.png" alt="Figure 2: Boxplots">
+  <div class="caption">Figure 2: Boxplots for CGPA and Placement Exam Marks (original data)</div>
+</div>
+
+<!-- ================= PAGE 5 ================= -->
+<div class="page-break"></div>
+
+<p>
+<strong>CGPA boxplot:</strong> The median bar in Figure 2 rests directly in the center of the box, reinforcing the distributional symmetry. Individual data points extend beyond the whiskers on both flanks: a lower cluster spanning 4.89 to 5.3, and upper observations situated between 8.6 and 9.12.
+</p>
+<p>
+<strong>Placement exam marks boxplot:</strong> The median is positioned toward the lower quartile, and the upper whisker ends near 83 marks. Multiple data points are flagged past the upper whisker between 85 and 100. This is an expected artifact of positive skewness rather than data corruption; filtering skewed distributions with Z-scores mistakenly discards genuine high values.
+</p>
+
+<h3>7.3 Z-Score Calculation and Outlier Detection</h3>
+<p>
+Z-scores for each student's CGPA were computed using sample parameters (&mu; = 6.961, &sigma; = 0.616). Filtering with the standard threshold <code>|Z| &gt; 3</code> detected exactly five anomalous observations, listed in Table 3.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Row</th>
+      <th>cgpa</th>
+      <th>placement_exam_marks</th>
+      <th>placed</th>
+      <th>cgpa_zscore</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>485</td><td>4.92</td><td>44.0</td><td>1</td><td>&minus;3.314</td></tr>
+    <tr><td>995</td><td>8.87</td><td>44.0</td><td>1</td><td>3.099</td></tr>
+    <tr><td>996</td><td>9.12</td><td>65.0</td><td>1</td><td>3.505</td></tr>
+    <tr><td>997</td><td>4.89</td><td>34.0</td><td>0</td><td>&minus;3.363</td></tr>
+    <tr><td>999</td><td>4.90</td><td>10.0</td><td>1</td><td>&minus;3.347</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 3: Records with |Z| &gt; 3 in the cgpa column</div>
+
+<p>
+Among these flagged records, three lie on the low end (CGPA of 4.89, 4.90, and 4.92) and two reside on the high end (8.87 and 9.12). The most extreme deviation is a CGPA of 9.12 with Z = 3.505, followed by 4.89 with Z = &minus;3.363. None of these observations represent recording or entry blunders; grade averages between 4.89 and 9.12 are entirely valid in academic grading. Notably, four of the five flagged students secured job placements, showing that extreme academic marks do not dictate recruitment results.
+</p>
+<p>
+Under a theoretical Gaussian curve, approximately 0.27% of observations fall beyond &plusmn;3&sigma;, which corresponds to roughly 2.7 records per 1,000. Finding 5 records (0.5%) is in close agreement with this statistical expectation, confirming that the CGPA feature is approximately normal with slightly heavier tails.
+</p>
+
+<h3>7.4 Removing the Outliers</h3>
+<p>
+The flagged observations were removed by retaining only instances satisfying <code>&minus;3 &lt; Z &lt; 3</code>. The dimensionality changed as detailed in Table 4:
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>Rows</th>
+      <th>Columns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Original</td><td>1000</td><td>4 (incl. cgpa_zscore)</td></tr>
+    <tr><td>After removing outliers</td><td>995</td><td>4 (incl. cgpa_zscore)</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 4: Dataset shape before and after outlier removal</div>
+
+<!-- ================= PAGE 6 ================= -->
+<div class="page-break"></div>
+
+<p>
+Only 5 out of 1,000 records (0.5%) were purged, ensuring that 99.5% of the original sample mass is retained. The column count of 4 reflects the intermediate standardization column <code>cgpa_zscore</code>.
+</p>
+
+<h3>7.5 Before and After Comparison</h3>
+
+<div class="figure-container-large">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/zscore_fig3_comparison.png" alt="Figure 3: Side-by-side comparison">
+  <div class="caption">Figure 3: CGPA distribution and boxplot, original (top) versus cleaned (bottom)</div>
+</div>
+
+<p>
+<strong>Histogram:</strong> While the baseline CGPA values spanned from 4.89 to 9.12, the sanitized dataset ranges from approximately 5.2 to 8.6. The isolated bars at the extreme tails have been eliminated, while the central bell-shaped contour and average (~6.96) remain undisturbed.
+</p>
+<p>
+<strong>Boxplot:</strong> In the original boxplot, several observations appeared past both whiskers. In the cleaned boxplot, only three residual points linger past the whisker edges (two near 5.2 and one near 8.6). The core interquartile box and median position remain unchanged, demonstrating that outlier trimming did not perturb the primary population structure.
+</p>
+<p>
+<em>Note on Residual Boxplot Outliers:</em> The presence of points outside the whiskers post-cleaning is mathematically expected. Boxplots define outlier fences using the 1.5 &times; IQR rule (roughly 2.7&sigma; in normal data), which is marginally more stringent than the 3.0&sigma; Z-score cutoff. Furthermore, standard scores were evaluated globally once on the full sample; mild extreme points within 3 standard deviations naturally remain.
+</p>
+
+<h3>7.6 Note on the Standard Deviation Used</h3>
+<p>
+The notebook computes standard deviation using pandas <code>.std()</code>, which divides by <em>n &minus; 1</em> (sample formula). By contrast, <code>scipy.stats.zscore</code> employs population standard deviation (dividing by <em>n</em>). With <em>n = 1,000</em>, the resulting numerical difference is roughly 0.05%, producing identical outlier classifications under both approaches.
+</p>
+
+<!-- ================= PAGE 7 ================= -->
+<div class="page-break"></div>
+
+<h2>8. Result</h2>
+<p>
+The Z-score outlier filtering procedure was applied to the student placement dataset. It successfully detected 5 extreme observations in the <code>cgpa</code> attribute (3 on the lower tail: 4.89, 4.90, 4.92; 2 on the upper tail: 8.87, 9.12). Pruning these entries reduced the dataset from 1,000 to 995 records (0.5% reduction). Comparative distribution analysis confirmed that extreme tail dispersion was removed without shifting the distribution center or modifying the symmetric contour. Meanwhile, <code>placement_exam_marks</code> was identified as positively skewed, correctly preserving it from Gaussian Z-score truncation.
+</p>
+
+<h2>9. Conclusion</h2>
+<p>
+The Z-score method serves as an efficient, intuitive tool for screening anomalous data points in attributes conforming to a Gaussian distribution, as demonstrated by the CGPA feature. However, its primary constraint is the assumption of normality: applying Z-score thresholds to skewed variables produces false-positive detections along legitimate tails. For non-normal features, nonparametric strategies such as the IQR rule, median/MAD modified Z-scores, or Isolation Forests should be utilized. Furthermore, domain practitioners must review flagged points prior to deletion, since rare empirical observations often convey critical information rather than errors.
+</p>
+
+<h2>10. Questions</h2>
+
+<div class="question-block">
+  <div class="question-title">Q1. What is an outlier?</div>
+  <p>
+  An outlier is an empirical data point that deviates markedly from the predominant pattern established by the remainder of the dataset. Such anomalies can stem from procedural faults, measurement errors, sensor malfunctions, or genuine extreme natural variations. In this laboratory study, CGPA values of 4.89 and 9.12 exemplify outliers: both reside more than 3 standard deviations away from the sample mean of 6.96.
+  </p>
+</div>
+
+<div class="question-block">
+  <div class="question-title">Q2. How is Z-score calculated?</div>
+  <p>
+  The Z-score of an observation is computed by subtracting the dataset mean from the observed value and dividing the result by the standard deviation: <strong>Z = (X &minus; &mu;) / &sigma;</strong>. The sign indicates directionality (positive for values above average, negative for values below), while the magnitude reflects the distance from the mean in standard deviation units. In pandas, this is vectorized as:
+  </p>
+  <div class="code-block">placement_df['cgpa_zscore'] = (placement_df['cgpa'] - placement_df['cgpa'].mean()) / placement_df['cgpa'].std()</div>
+  <p>
+  For example, a student CGPA of 9.12 yields Z = (9.12 &minus; 6.961) / 0.616 &approx; 3.51, indicating an observation located 3.51 standard deviations above the average.
+  </p>
+</div>
+
+<div class="question-block">
+  <div class="question-title">Q3. Why do we take |Z| &gt; 3 as a threshold?</div>
+  <p>
+  This cutoff is derived directly from the Empirical Rule (68-95-99.7 rule) governing normal distributions: roughly 68% of data points fall within &plusmn;1&sigma;, 95% within &plusmn;2&sigma;, and 99.7% within &plusmn;3&sigma;. Consequently, only ~0.27% of observations in a Gaussian distribution are expected to lie beyond &plusmn;3 standard deviations, making such events sufficiently rare to warrant scrutiny. A lower threshold such as 2 would flag ~4.6% of typical data, causing excessive false alarms, while a higher threshold would fail to isolate genuine anomalies.
+  </p>
+</div>
+
+<!-- ================= PAGE 8 ================= -->
+<div class="page-break"></div>
+
+<p>
+The threshold of 3 represents a widely accepted convention balancing detection sensitivity against unwarranted data loss. In our experimental dataset, 5 of 1,000 records (0.5%) exceeded the threshold, closely matching the 0.27% expected under theoretical normality.
+</p>
+
+<div class="question-block">
+  <div class="question-title">Q4. What are some limitations of the Z-score method?</div>
+  <ul>
+    <li><strong>Normality Assumption:</strong> The method requires that data be approximately bell-shaped. On skewed features such as <code>placement_exam_marks</code>, it flags genuine observations along the tail while overlooking anomalies on the truncated side.</li>
+    <li><strong>Vulnerability of Baseline Parameters:</strong> The sample mean and standard deviation are non-robust statistics sensitive to the very outliers being detected. Extreme values inflate both parameters, masking secondary outliers.</li>
+    <li><strong>Sample Size Constraints:</strong> In very small samples, the maximum mathematically possible Z-score is constrained, preventing genuine outliers from reaching the |Z| &gt; 3 threshold.</li>
+    <li><strong>Univariate Restriction:</strong> The method examines features individually and cannot identify multi-attribute anomalies that appear typical in one dimension but anomalous in combination.</li>
+    <li><strong>Heuristic Cutoff:</strong> The threshold of 3 is a heuristic convention; an observation beyond 3 standard deviations is not automatically an error.</li>
+    <li><strong>Nonparametric Alternatives:</strong> For skewed or multivariate data, the IQR method, modified Z-scores (median and MAD), or Isolation Forests provide far more reliable results.</li>
+  </ul>
+</div>
+
+<div class="question-block">
+  <div class="question-title">Q5. How does removing outliers affect model accuracy in machine learning?</div>
+  <p>The impact of outlier filtering depends on algorithm sensitivity and the validity of the extreme observations:</p>
+  <ul>
+    <li><strong>Accuracy Improvements in Sensitive Models:</strong> Outlier trimming benefits algorithms sensitive to extreme magnitude deviations, such as linear and logistic regression, Support Vector Machines, KNN, and k-means clustering. Outliers exert disproportionate leverage on loss functions, pulling regression slopes and decision boundaries away from optimal convergence. Removing genuine anomalies stabilizes parameter estimates and boosts generalization.</li>
+    <li><strong>Negligible Impact on Robust Models:</strong> Tree-based architectures (decision trees, Random Forests, Gradient Boosting) partition feature spaces via threshold splits and are largely invariant to monotonic outliers. Trimming 0.5% of rows causes negligible change in tree predictions.</li>
+    <li><strong>Risk of Degrading Real-World Generalization:</strong> If outliers represent genuine, highly informative occurrences (e.g., exceptional students, rare medical events, fraud), deleting them deprives the model of essential domain variance. Removing excessive observations also contracts training volume.</li>
+  </ul>
+  <p>
+  Therefore, outliers should be investigated systematically, and candidate models should be benchmarked with and without outlier filtering using rigorous cross-validation to substantiate performance gains.
+  </p>
+</div>
+
+</body>
+</html>

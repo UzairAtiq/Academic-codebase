@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Lab Journal - Handling Missing Data</title>
+<style>
+  @page {
+    size: A4;
+    margin: 16mm 18mm 16mm 18mm;
+    @bottom-center {
+      content: "Muhammad Uzair Attiq | 01-136242-029 | Page " counter(page);
+      font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #64748b;
+    }
+  }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    color: #1a1a1a;
+    line-height: 1.42;
+    font-size: 9pt;
+  }
+
+  .header-block {
+    margin-bottom: 8px;
+  }
+  .student-name {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #0f172a;
+    margin-bottom: 2px;
+  }
+  .student-meta {
+    font-size: 8.5pt;
+    color: #334155;
+    margin-bottom: 2px;
+  }
+  .divider {
+    border: none;
+    border-top: 1.5px solid #0f2b5c;
+    margin: 6px 0 12px 0;
+  }
+
+  .journal-title {
+    text-align: center;
+    font-size: 15pt;
+    font-weight: bold;
+    color: #0f2b5c;
+    margin-bottom: 3px;
+  }
+  .journal-subtitle {
+    text-align: center;
+    font-size: 10.5pt;
+    font-style: italic;
+    color: #1e293b;
+    margin-bottom: 14px;
+  }
+
+  h2 {
+    font-size: 11pt;
+    font-weight: bold;
+    color: #0f2b5c;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    border-bottom: 0.5px solid #cbd5e1;
+    padding-bottom: 2px;
+    page-break-after: avoid;
+  }
+
+  h3 {
+    font-size: 9.8pt;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 6px;
+    text-align: justify;
+  }
+
+  ul, ol {
+    margin-top: 0;
+    margin-bottom: 6px;
+    padding-left: 20px;
+  }
+  li {
+    margin-bottom: 3px;
+    text-align: justify;
+  }
+
+  .code-block {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-family: Consolas, 'Courier New', Courier, monospace;
+    font-size: 7.2pt;
+    line-height: 1.25;
+    color: #0f172a;
+    margin-bottom: 6px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    page-break-inside: avoid;
+  }
+
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 3px 0;
+    font-size: 8pt;
+    page-break-inside: avoid;
+  }
+  table.data-table th, table.data-table td {
+    border: 1px solid #cbd5e1;
+    padding: 3.5px 6px;
+    text-align: center;
+  }
+  table.data-table th {
+    background-color: #f1f5f9;
+    font-weight: 600;
+    color: #1e293b;
+  }
+  table.data-table tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  .caption {
+    text-align: center;
+    font-size: 7.8pt;
+    font-style: italic;
+    color: #475569;
+    margin-top: 3px;
+    margin-bottom: 8px;
+    page-break-before: avoid;
+  }
+
+  .figure-container {
+    text-align: center;
+    margin: 6px 0;
+    page-break-inside: avoid;
+  }
+  .figure-container img {
+    max-width: 90%;
+    max-height: 165px;
+    height: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+  }
+
+  .figure-container-heatmap img {
+    max-width: 92%;
+    max-height: 200px;
+    height: auto;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+
+  .question-block {
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+  .question-title {
+    font-weight: bold;
+    color: #0f2b5c;
+    margin-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="header-block">
+  <div class="student-name">Muhammad Uzair Attiq</div>
+  <div class="student-meta"><strong>Enrollment No:</strong> 01-136242-029</div>
+  <div class="student-meta"><strong>Program / Section:</strong> BS Artificial Intelligence, BSAI-5A, Bahria University Islamabad</div>
+  <div class="student-meta"><strong>Course:</strong> Machine Learning</div>
+</div>
+<hr class="divider">
+
+<div class="journal-title">Lab Journal</div>
+<div class="journal-subtitle">Handling Missing Data<br>Complete Case Analysis, Categorical and Numerical Imputation, KNN Imputer and Iterative Imputer</div>
+
+<h2>1. Objective</h2>
+<p>
+To explore, implement, and benchmark diverse methodologies for addressing missing data within an empirical dataset, and to assess their respective impacts on feature distributions, inter-variable relationships, and classification performance. The core objectives are:
+</p>
+<ol>
+  <li>Detect, quantify, and visualize missing data patterns across tabular attributes.</li>
+  <li>Execute Complete Case Analysis (listwise deletion) and analyze the consequences of observational loss.</li>
+  <li>Apply univariate categorical and numerical imputation heuristics to rectify incomplete columns.</li>
+  <li>Implement multivariate imputation models including K-Nearest Neighbors (KNN) and Iterative Imputation (MICE).</li>
+  <li>Perform a comparative evaluation of imputation strategies regarding distribution preservation and predictive utility.</li>
+</ol>
+
+<h2>2. Theory</h2>
+<p>
+Missing values occur frequently in real-world tabular data due to sensor dropouts, survey non-responses, or transmission interruptions. Inappropriate handling introduces substantial bias and destabilizes downstream predictive models. The five strategies examined in this experiment include:
+</p>
+<p>
+<strong>Complete Case Analysis (Listwise Deletion):</strong> Discards every observation possessing one or more missing fields. While trivial to execute, it can induce severe sample reduction and catastrophic selection bias when data is not Missing Completely at Random (MCAR).
+</p>
+<p>
+<strong>Categorical Imputation:</strong> Replaces missing qualitative levels with either the mode (most common category) or an explicit sentinel indicator such as "Unknown" to maintain structural category integrity.
+</p>
+<p>
+<strong>Numerical Imputation:</strong> Substitutes numeric gaps with summary statistics (mean, median) or fixed constants (e.g., 0). While fast, univariate methods fail to capture feature covariance and compress variance.
+</p>
+<p>
+<strong>KNN Imputer:</strong> Estimates missing feature entries by averaging values from the <em>k</em> nearest neighboring observations in Euclidean feature space, capturing localized multi-attribute patterns at the cost of distance computation overhead.
+</p>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page-break"></div>
+
+<p>
+<strong>Iterative Imputer (MICE):</strong> Models each incomplete attribute as a dependent target regressed on all remaining features in round-robin fashion over repeated iterations, capturing complex multivariate linear combinations.
+</p>
+
+<h2>3. Tools & Libraries</h2>
+<ul>
+  <li>Python 3.x, Jupyter Notebook</li>
+  <li>Scientific & Tabular Libraries: pandas, numpy, matplotlib, seaborn, scikit-learn</li>
+  <li>Specific scikit-learn Modules: <code>KNNImputer</code>, <code>IterativeImputer</code>, <code>LogisticRegression</code>, <code>train_test_split</code>, <code>accuracy_score</code>, <code>SimpleImputer</code>, <code>Pipeline</code></li>
+</ul>
+
+<h2>4. Dataset</h2>
+<p>
+The study utilizes the classic Titanic passenger dataset sourced directly from GitHub. It comprises 891 rows and 15 attributes, combining continuous/discrete numerical features (<code>survived</code>, <code>pclass</code>, <code>age</code>, <code>sibsp</code>, <code>parch</code>, <code>fare</code>) with categorical descriptors (<code>sex</code>, <code>embarked</code>, <code>class</code>, <code>who</code>, <code>deck</code>, <code>embark_town</code>, <code>alive</code>). The binary survival flag (<code>survived</code>) serves as the target variable for machine learning evaluation.
+</p>
+
+<h2>5. Procedure</h2>
+<ol>
+  <li>Import analytical libraries, ingest the Titanic dataset, and compute descriptive statistics.</li>
+  <li>Quantify missing entries per attribute and visualize missingness density via a seaborn heatmap.</li>
+  <li>Perform Complete Case Analysis using <code>dropna()</code> and compare pre- and post-deletion sample sizes.</li>
+  <li>Impute missing qualitative features using mode substitution and the category "Unknown".</li>
+  <li>Impute missing numerical ages using mean, median, and constant (0) values, contrasting resulting density curves.</li>
+  <li>Apply the multivariate KNN Imputer (<em>k=3</em>) across numerical features.</li>
+  <li>Apply the multivariate Iterative Imputer (<em>max_iter=10</em>) across numerical features.</li>
+  <li>Benchmark initial classification accuracy by fitting Logistic Regression models across each imputed dataset.</li>
+  <li>Calculate descriptive statistics for age across all techniques and visualize comparative density curves.</li>
+  <li>Assess correlation matrices before and after imputation to evaluate preservation of inter-feature dependencies.</li>
+  <li>Examine the iterative convergence trajectory and screen for out-of-domain (negative) imputed age values.</li>
+  <li>Evaluate overall model test accuracy across all strategies, validating results using leakage-safe scikit-learn Pipelines.</li>
+</ol>
+
+<h2>6. Python Code Implementation</h2>
+
+<div class="code-block"># Step 1: Setup and dataset loading
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.impute import KNNImputer
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+df = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/titanic.csv')
+df.describe()</div>
+
+<!-- ================= PAGE 3 ================= -->
+<div class="page-break"></div>
+
+<div class="code-block"># Step 2: Identifying missing values
+print("Missing values per column:\n", df.isnull().sum())
+plt.figure(figsize=(10, 6))
+sns.heatmap(df.isnull(), cbar=False, cmap="viridis")
+plt.title("Missing Data Heatmap")
+plt.show()
+
+# Step 3: Complete Case Analysis
+df_complete = df.dropna()
+print("Original shape:", df.shape)
+print("Shape after complete case analysis:", df_complete.shape)
+
+# Step 4: Handling missing categorical data
+df["embark_town"] = df["embark_town"].fillna(df["embark_town"].mode()[0])
+df["deck"] = df["deck"].fillna("Unknown")
+df["embarked"] = df["embarked"].fillna(df["embarked"].mode()[0])
+print(df[["embark_town", "deck", "embarked"]].isnull().sum())
+
+# Step 5: Handling missing numerical data
+df_mean = df.copy()
+df_median = df.copy()
+df_constant = df.copy()
+df_mean["age"] = df_mean["age"].fillna(df_mean["age"].mean())
+df_median["age"] = df_median["age"].fillna(df_median["age"].median())
+df_constant["age"] = df_constant["age"].fillna(0)
+
+plt.figure(figsize=(10, 6))
+sns.kdeplot(df["age"], label="Original", fill=True)
+sns.kdeplot(df_mean["age"], label="Mean Imputation", fill=False)
+sns.kdeplot(df_median["age"], label="Median Imputation", fill=False)
+sns.kdeplot(df_constant["age"], label="Constant Imputation", fill=False)
+plt.title("Age Distribution Before and After Numerical Imputation")
+plt.legend()
+plt.show()
+
+# Step 6: KNN Imputer
+imputer_knn = KNNImputer(n_neighbors=3)
+numerical_cols = df.select_dtypes(include=[np.number]).columns
+df_knn = df.copy()
+df_knn[numerical_cols] = imputer_knn.fit_transform(df[numerical_cols])
+print(df_knn[numerical_cols].isnull().sum())
+df_knn[numerical_cols].head()</div>
+
+<!-- ================= PAGE 4 ================= -->
+<div class="page-break"></div>
+
+<div class="code-block"># Step 7: Iterative Imputer
+imputer_iter = IterativeImputer(max_iter=10, random_state=0)
+df_iter = df.copy()
+df_iter[numerical_cols] = imputer_iter.fit_transform(df[numerical_cols])
+print(df_iter[numerical_cols].isnull().sum())
+df_iter[numerical_cols].head()
+
+# Step 8: Technique comparison via machine learning
+def train_eval_model(data, name):
+    X = data[["age", "fare", "pclass"]]
+    y = data["survived"]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LogisticRegression()
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    print(f"Accuracy with {name}: {accuracy_score(y_test, preds):.4f}")
+
+train_eval_model(df_complete, "Complete Case Analysis")
+train_eval_model(df_knn, "KNN Imputation")
+train_eval_model(df_iter, "Iterative Imputation")
+
+# Step 9: Reload original data for comparison
+df_orig = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/titanic.csv')
+methods = {"Original": df_orig, "Mean": df_mean, "Median": df_median, "Constant (0)": df_constant, "KNN (k=3)": df_knn, "Iterative": df_iter}
+
+# Step 10: Statistics of age before and after imputation
+stats = []
+for name, mdf in methods.items():
+    s = mdf['age'].describe()[['count', 'mean', 'std', 'min', '50%', 'max']]
+    s['skew'] = mdf['age'].skew()
+    s.name = name
+    stats.append(s)
+print(pd.DataFrame(stats))
+print("-" * 50)
+
+missing_mask = df_orig['age'].isnull()
+knn_imputed = df_knn.loc[missing_mask, 'age']
+iter_imputed = df_iter.loc[missing_mask, 'age']
+print(f"KNN distinct imputed values: {knn_imputed.nunique()}")
+print(f"KNN min: {knn_imputed.min():.2f}, max: {knn_imputed.max():.2f}")
+print(f"Iterative distinct imputed values: {iter_imputed.nunique()}")
+print(f"Iterative min: {iter_imputed.min():.2f}, max: {iter_imputed.max():.2f}")
+
+# Step 11: Distribution comparison for all methods
+plt.figure(figsize=(12, 6))
+sns.kdeplot(df_orig['age'], label='Original', fill=True)
+sns.kdeplot(df_mean['age'], label='Mean', fill=False)
+sns.kdeplot(df_median['age'], label='Median', fill=False)
+sns.kdeplot(df_constant['age'], label='Constant (0)', fill=False)
+sns.kdeplot(df_knn['age'], label='KNN (k=3)', fill=False)
+sns.kdeplot(df_iter['age'], label='Iterative', fill=False)
+plt.title('Age Distribution: All Imputation Methods')
+plt.legend()
+plt.show()</div>
+
+<!-- ================= PAGE 5 ================= -->
+<div class="page-break"></div>
+
+<div class="code-block"># Step 12: KNN vs mean and median imputation
+plt.figure(figsize=(10, 5))
+sns.kdeplot(df_orig['age'], label='Original', fill=True)
+sns.kdeplot(df_mean['age'], label='Mean', fill=False)
+sns.kdeplot(df_median['age'], label='Median', fill=False)
+sns.kdeplot(df_knn['age'], label='KNN (k=3)', fill=False)
+plt.title('KNN vs Basic Imputations')
+plt.legend()
+plt.show()
+
+# Step 13: Effect of imputation on feature relationships
+corrs = []
+features = ['pclass', 'fare', 'sibsp', 'parch', 'survived']
+for name, mdf in methods.items():
+    c = [mdf['age'].corr(mdf[f]) for f in features]
+    corrs.append(c)
+corr_df = pd.DataFrame(corrs, index=methods.keys(), columns=features).round(3)
+print("Correlation of age with other features:")
+print(corr_df)
+
+plt.figure(figsize=(16, 6))
+plt.subplot(1, 2, 1); sns.heatmap(df_orig[['age'] + features].corr(), annot=True, cmap='coolwarm', fmt='.2f'); plt.title('Original Correlation Matrix')
+plt.subplot(1, 2, 2); sns.heatmap(df_iter[['age'] + features].corr(), annot=True, cmap='coolwarm', fmt='.2f'); plt.title('Iterative Imputed Correlation Matrix')
+plt.show()
+
+# Step 14: Convergence of the Iterative Imputer
+print(f"imputer_iter.n_iter_: {imputer_iter.n_iter_} (converged before max_iter=10)")
+print("-" * 50)
+missing_mask = df_orig['age'].isnull()
+for max_i in [1, 2, 3, 5, 10]:
+    imp = IterativeImputer(max_iter=max_i, random_state=0)
+    res = imp.fit_transform(df_orig[numerical_cols])
+    age_idx = list(numerical_cols).index('age')
+    imputed_ages = res[missing_mask, age_idx]
+    print(f"max_iter={max_i}: imputed mean={imputed_ages.mean():.4f}, std={imputed_ages.std():.4f}")
+
+# Step 15: Checking for impossible values
+neg_count = (df_iter['age'] < 0).sum()
+min_age = df_iter['age'].min()
+print(f"Iterative neg count: {neg_count}, min age: {min_age:.2f}")
+
+imp_fixed = IterativeImputer(max_iter=10, random_state=0, min_value=0)
+df_iter_fixed = df_iter.copy()
+df_iter_fixed[numerical_cols] = imp_fixed.fit_transform(df_orig[numerical_cols])
+print(f"Fixed Iterative neg count: {(df_iter_fixed['age'] < 0).sum()}, min age: {df_iter_fixed['age'].min():.2f}")</div>
+
+<!-- ================= PAGE 6 ================= -->
+<div class="page-break"></div>
+
+<div class="code-block"># Step 16: Accuracy of all techniques
+accs = []
+for name, mdf in [("Complete Case Analysis", df_complete), ("Mean Imputation", df_mean),
+                  ("Median Imputation", df_median), ("Constant Imputation", df_constant),
+                  ("KNN Imputation", df_knn), ("Iterative Imputation", df_iter)]:
+    train_eval_model(mdf, name)
+    X = mdf[['age', 'fare', 'pclass']]
+    y = mdf['survived']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    model = LogisticRegression()
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    accs.append({"Method": name, "Accuracy": accuracy_score(y_test, preds), "Train Rows": len(X_train), "Test Rows": len(X_test)})
+
+print("-" * 50)
+print(pd.DataFrame(accs))
+
+# Step 17: Leakage-safe comparison with Pipelines
+from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+X = df_orig[['age', 'fare', 'pclass']]
+y = df_orig['survived']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+pipelines = {
+    "Simple (Median)": Pipeline([('imputer', SimpleImputer(strategy='median')), ('model', LogisticRegression())]),
+    "KNN": Pipeline([('imputer', KNNImputer(n_neighbors=3)), ('model', LogisticRegression())]),
+    "Iterative": Pipeline([('imputer', IterativeImputer(min_value=0, random_state=0)), ('model', LogisticRegression())])
+}
+for name, p in pipelines.items():
+    p.fit(X_train, y_train)
+    preds = p.predict(X_test)
+    print(f"Pipeline {name} Test Accuracy: {accuracy_score(y_test, preds):.4f}")</div>
+
+<h2>7. Output and Analysis</h2>
+
+<h3>7.1 Basic Statistics</h3>
+<p>
+The summary statistics derived from numerical feature columns via <code>df.describe()</code> are presented in Table 1.
+</p>
+
+<!-- ================= PAGE 7 ================= -->
+<div class="page-break"></div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Statistic</th>
+      <th>survived</th>
+      <th>pclass</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>count</td><td>891</td><td>891</td><td>714</td><td>891</td><td>891</td><td>891</td></tr>
+    <tr><td>mean</td><td>0.384</td><td>2.309</td><td>29.699</td><td>0.523</td><td>0.382</td><td>32.204</td></tr>
+    <tr><td>std</td><td>0.487</td><td>0.836</td><td>14.526</td><td>1.103</td><td>0.806</td><td>49.693</td></tr>
+    <tr><td>min</td><td>0.000</td><td>1.000</td><td>0.420</td><td>0.000</td><td>0.000</td><td>0.000</td></tr>
+    <tr><td>25%</td><td>0.000</td><td>2.000</td><td>20.125</td><td>0.000</td><td>0.000</td><td>7.910</td></tr>
+    <tr><td>50%</td><td>0.000</td><td>3.000</td><td>28.000</td><td>0.000</td><td>0.000</td><td>14.454</td></tr>
+    <tr><td>75%</td><td>1.000</td><td>3.000</td><td>38.000</td><td>1.000</td><td>0.000</td><td>31.000</td></tr>
+    <tr><td>max</td><td>1.000</td><td>3.000</td><td>80.000</td><td>8.000</td><td>6.000</td><td>512.329</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 1: Summary statistics of the numerical columns</div>
+
+<p>
+Initial inspection of the count row reveals immediate evidence of missing data: while all companion features record 891 entries, <code>age</code> exhibits only 714 valid records. The mean age stands at 29.70 years against a median of 28.00, reflecting mild positive skewness. Additionally, <code>fare</code> displays substantial dispersion, spanning from 0 to 512.33 against a modest median of 14.45; such scale variation is critical for distance-sensitive algorithms like KNN.
+</p>
+
+<h3>7.2 Identifying Missing Values</h3>
+<p>
+Quantification of missingness using <code>isnull().sum()</code> demonstrates that data incompleteness is confined to exactly four attributes, as summarized in Table 2.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Missing values</th>
+      <th>% of 891 rows</th>
+      <th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>age</td><td>177</td><td>19.9%</td><td>Numerical</td></tr>
+    <tr><td>deck</td><td>688</td><td>77.2%</td><td>Categorical</td></tr>
+    <tr><td>embarked</td><td>2</td><td>0.2%</td><td>Categorical</td></tr>
+    <tr><td>embark_town</td><td>2</td><td>0.2%</td><td>Categorical</td></tr>
+    <tr><td>All other 11 columns</td><td>0</td><td>0%</td><td>Mixed</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 2: Missing values per column</div>
+
+<!-- ================= PAGE 8 ================= -->
+<div class="page-break"></div>
+
+<div class="figure-container-heatmap">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/missing_fig1_heatmap.png" alt="Figure 1: Missing Data Heatmap">
+  <div class="caption">Figure 1: Missing data heatmap (yellow = missing value)</div>
+</div>
+
+<p>
+In the missingness heatmap (Figure 1), yellow bands demarcate missing entries. The <code>deck</code> attribute is overwhelmingly yellow, indicating that over three-quarters of all passenger cabin assignments were unrecorded. For <code>age</code>, missing entries appear as dispersed horizontal bands across all passenger classes, confirming that age non-response is distributed throughout the sample rather than concentrated in a localized block. The <code>embarked</code> and <code>embark_town</code> attributes exhibit two isolated, co-occurring gaps representing the same two passengers. The remaining 11 features are completely populated. These findings dictate distinct mitigation strategies: <code>deck</code> is too sparse for continuous imputation, <code>age</code> requires principled estimation, and port variables can be resolved with simple mode filling.
+</p>
+
+<h3>7.3 Complete Case Analysis</h3>
+<p>
+Applying Complete Case Analysis (listwise deletion via <code>dropna()</code>) eliminates every row containing at least one unobserved value. Dimensionality changes are summarized in Table 3.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>Rows</th>
+      <th>Columns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Original</td><td>891</td><td>15</td></tr>
+    <tr><td>After complete case analysis</td><td>182</td><td>15</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 3: Dataset shape before and after Complete Case Analysis</div>
+
+<p>
+Only 182 out of 891 observations (20.4%) survive listwise deletion, representing an unacceptable loss of 709 records (79.6%). This massive attrition is driven primarily by the missing cabin assignments in <code>deck</code>. Crucially, the surviving 182 passengers do not constitute an unbiased sub-sample: first-class passengers comprise 86% of the complete-case cohort (compared to 24% in the full population), while the survival rate inflates to 68% (versus 38% overall). Models fitted on complete cases would consequently learn a heavily distorted, non-representative representation.
+</p>
+
+<!-- ================= PAGE 9 ================= -->
+<div class="page-break"></div>
+
+<h3>7.4 Handling Missing Categorical Data</h3>
+<p>
+Three qualitative columns required imputation: <code>embark_town</code> and <code>embarked</code> were imputed using the empirical mode, whereas <code>deck</code> was populated with an explicit category indicator ("Unknown"), as recorded in Table 4.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Missing before</th>
+      <th>Missing after</th>
+      <th>Fill value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>embark_town</td><td>2</td><td>0</td><td>Mode (Southampton)</td></tr>
+    <tr><td>deck</td><td>688</td><td>0</td><td>Constant "Unknown"</td></tr>
+    <tr><td>embarked</td><td>2</td><td>0</td><td>Mode (S)</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 4: Missing categorical values after imputation</div>
+
+<p>
+Mode imputation is fully justified for port variables because only two passengers are missing, and Southampton represents over 72% of all boardings, causing negligible distribution shift. Conversely, mode imputation on <code>deck</code> would be disastrous, artificially assigning 77% of passengers to a single cabin tier. Designating missing decks as "Unknown" preserves the absence of records as an informative categorical indicator.
+</p>
+<p>
+<em>Methodological Refinement:</em> In original pandas workflows, chaining <code>fillna(..., inplace=True)</code> triggers a <code>FutureWarning</code>. The modern, robust paradigm adopted in our modified notebook directly reassigns the transformed series: <code>df['col'] = df['col'].fillna(val)</code>.
+</p>
+
+<h3>7.5 Handling Missing Numerical Data</h3>
+<p>
+The 177 missing numerical entries in <code>age</code> were imputed using three baseline heuristics on duplicate dataframe copies: sample mean (29.70), sample median (28.00), and constant replacement (0). The resulting distributions are contrasted against the original KDE in Figure 2.
+</p>
+
+<div class="figure-container">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/missing_fig2_numerical.png" alt="Figure 2: Numerical Imputation KDE">
+  <div class="caption">Figure 2: Age distribution before and after mean, median and constant imputation</div>
+</div>
+
+<ul>
+  <li><strong>Mean &amp; Median Imputation:</strong> Both techniques compress distribution variance, creating an unnaturally tall, narrow spike around 28–30 years. Imputing 177 identical central values artificially inflates kurtosis while leaving tail masses unchanged. The median peak is positioned slightly leftward of the mean curve, reflecting its lower value.</li>
+</ul>
+
+<!-- ================= PAGE 10 ================= -->
+<div class="page-break"></div>
+
+<ul>
+  <li><strong>Constant (0) Imputation:</strong> This intervention severely damages the distributional structure, fabricating a massive artificial peak at 0 years (suggesting 177 newborn infants) and dragging the KDE density below zero. The mean age drops drastically to 23.80 while variance expands artificially. Constant zero replacement is wholly invalid for demographic age modeling.</li>
+  <li><strong>Optimal Baseline Selection:</strong> Due to mild rightward skewness in observed ages, median imputation is preferable to mean substitution because the median is resistant to extreme elderly observations. However, both univariate methods ignore covariate relationships.</li>
+</ul>
+
+<h3>7.6 KNN Imputer</h3>
+<p>
+The multivariate KNN Imputer (<em>n_neighbors=3</em>) was fitted across the six numerical attributes. For each missing age, the algorithm identifies the three nearest records based on normalized Euclidean distances across companion features and calculates their average. Gaps are completely resolved, as shown in Table 5.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Count</th>
+      <th>survived</th>
+      <th>pclass</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Missing after KNN</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 5: Missing numerical values after KNN imputation (numerical columns)</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>survived</th>
+      <th>pclass</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>0.0</td><td>3.0</td><td>22.0</td><td>1.0</td><td>0.0</td><td>7.2500</td></tr>
+    <tr><td>1</td><td>1.0</td><td>1.0</td><td>38.0</td><td>1.0</td><td>0.0</td><td>71.2833</td></tr>
+    <tr><td>2</td><td>1.0</td><td>3.0</td><td>26.0</td><td>0.0</td><td>0.0</td><td>7.9250</td></tr>
+    <tr><td>3</td><td>1.0</td><td>1.0</td><td>35.0</td><td>1.0</td><td>0.0</td><td>53.1000</td></tr>
+    <tr><td>4</td><td>0.0</td><td>3.0</td><td>35.0</td><td>0.0</td><td>0.0</td><td>8.0500</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 6: First five rows after KNN imputation (df_knn.head())</div>
+
+<p>
+The first five observations in Table 6 match the raw data identically because none of these passengers lacked an observed age. KNN leaves observed values intact and computes varied, context-specific values for incomplete records.
+</p>
+
+<h3>7.7 Iterative Imputer</h3>
+<p>
+The Iterative Imputer (MICE, <em>max_iter=10</em>, <em>random_state=0</em>) was executed across the numerical columns, repeatedly regressing incomplete features on all available variables. All missing numerical values are fully imputed (Table 7).
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Count</th>
+      <th>survived</th>
+      <th>pclass</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Missing after Iterative</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 7: Missing numerical values after Iterative imputation</div>
+
+<!-- ================= PAGE 11 ================= -->
+<div class="page-break"></div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Index</th>
+      <th>survived</th>
+      <th>pclass</th>
+      <th>age</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>0.0</td><td>3.0</td><td>22.0</td><td>1.0</td><td>0.0</td><td>7.2500</td></tr>
+    <tr><td>1</td><td>1.0</td><td>1.0</td><td>38.0</td><td>1.0</td><td>0.0</td><td>71.2833</td></tr>
+    <tr><td>2</td><td>1.0</td><td>3.0</td><td>26.0</td><td>0.0</td><td>0.0</td><td>7.9250</td></tr>
+    <tr><td>3</td><td>1.0</td><td>1.0</td><td>35.0</td><td>1.0</td><td>0.0</td><td>53.1000</td></tr>
+    <tr><td>4</td><td>0.0</td><td>3.0</td><td>35.0</td><td>0.0</td><td>0.0</td><td>8.0500</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 8: First five rows after Iterative imputation (df_iter.head())</div>
+
+<p>
+As with KNN, the initial five records in Table 8 remain unaffected. The statistical behavior, convergence trajectory, and edge cases of Iterative Imputation are explored in following sections.
+</p>
+
+<h3>7.8 Comparison Using Logistic Regression</h3>
+<p>
+To evaluate empirical model performance, a Logistic Regression classifier was trained on <code>age</code>, <code>fare</code>, and <code>pclass</code> to predict survival (80/20 train-test split, <em>random_state=42</em>). Classification accuracy across the baseline methods is reported in Table 9.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Technique</th>
+      <th>Rows used</th>
+      <th>Test rows</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Complete Case Analysis</td><td>182</td><td>37</td><td>0.7297</td></tr>
+    <tr><td>KNN Imputation</td><td>891</td><td>179</td><td>0.7598</td></tr>
+    <tr><td>Iterative Imputation</td><td>891</td><td>179</td><td>0.7598</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 9: Logistic Regression accuracy for each technique (notebook output)</div>
+
+<p>
+Both multivariate imputers achieve identical accuracy (0.7598), outperforming Complete Case Analysis (0.7297) by 3.01 percentage points. The equivalence of KNN and Iterative scores indicates that marginal variations in imputed age did not alter classification decisions across the test partition, reflecting the modest weight assigned to age relative to passenger class and fare.
+</p>
+<p>
+<em>Critical Methodological Caution:</em> The complete case score cannot be directly equated with imputation results. The CCA classifier was trained on only 145 rows and evaluated on just 37 test instances, where a single misclassification shifts accuracy by 2.70 percentage points (compared to 0.56% on 179 test rows). While imputation successfully preserves full statistical power, rigorous comparisons require leakage-safe validation.
+</p>
+
+<h3>7.9 Statistics of Age Before and After Imputation</h3>
+<p>
+Descriptive summary statistics were calculated across all imputation variants, alongside the diversity of values placed into the 177 missing slots (Tables 10 and 11).
+</p>
+
+<!-- ================= PAGE 12 ================= -->
+<div class="page-break"></div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Count</th>
+      <th>Mean</th>
+      <th>Std</th>
+      <th>Min</th>
+      <th>Median</th>
+      <th>Max</th>
+      <th>Skew</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Original (non-missing)</td><td>714</td><td>29.70</td><td>14.53</td><td>0.42</td><td>28.00</td><td>80.0</td><td>0.389</td></tr>
+    <tr><td>Mean</td><td>891</td><td>29.70</td><td>13.00</td><td>0.42</td><td>29.70</td><td>80.0</td><td>0.434</td></tr>
+    <tr><td>Median</td><td>891</td><td>29.36</td><td>13.02</td><td>0.42</td><td>28.00</td><td>80.0</td><td>0.510</td></tr>
+    <tr><td>Constant (0)</td><td>891</td><td>23.80</td><td>17.60</td><td>0.00</td><td>24.00</td><td>80.0</td><td>0.263</td></tr>
+    <tr><td>KNN (k=3)</td><td>891</td><td>29.76</td><td>13.56</td><td>0.42</td><td>28.00</td><td>80.0</td><td>0.408</td></tr>
+    <tr><td>Iterative</td><td>891</td><td>29.31</td><td>13.70</td><td>&minus;5.07</td><td>29.00</td><td>80.0</td><td>0.333</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 10: Age statistics after each imputation method</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>Distinct imputed values</th>
+      <th>Min imputed</th>
+      <th>Max imputed</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>KNN (k=3)</td><td>59</td><td>4.33</td><td>62.33</td></tr>
+    <tr><td>Iterative</td><td>94</td><td>&minus;5.07</td><td>44.86</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 11: Values imputed into the 177 missing ages</div>
+
+<ul>
+  <li><strong>Variance Attenuation:</strong> Mean and median substitution depress the standard deviation from 14.53 down to ~13.00 due to mass accumulation at central points. Skewness rises to 0.434 and 0.510, respectively.</li>
+  <li><strong>Severe Constant Distortion:</strong> Constant (0) imputation collapses the mean to 23.80 while inflating the standard deviation to 17.60, representing catastrophic distortion.</li>
+  <li><strong>Superior Variance Preservation via KNN:</strong> KNN preserves the mean (29.76) and retains significantly more spread (std = 13.56) than univariate filling, with skewness (0.408) closely tracking the original 0.389. It generates 59 distinct imputed estimates.</li>
+  <li><strong>Iterative Variance Retention and Anomalous Minimum:</strong> Iterative imputation preserves dispersion effectively (std = 13.70) across 94 unique estimates, but produces an impossible negative minimum age (&minus;5.07).</li>
+  <li><strong>Regression to the Mean:</strong> No imputation technique fully recovers the original standard deviation of 14.53. Because imputed values represent conditional averages, they are inherently less extreme than real observations (e.g., KNN imputed ages span 4.33 to 62.33, whereas true ages span 0.42 to 80).</li>
+</ul>
+
+<!-- ================= PAGE 13 ================= -->
+<div class="page-break"></div>
+
+<h3>7.10 Distribution Comparison for All Methods</h3>
+
+<div class="figure-container">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/missing_fig3_all_methods.png" alt="Figure 3: All Methods KDE">
+  <div class="caption">Figure 3: Age distribution for all imputation methods</div>
+</div>
+
+<p>
+Figure 3 overlays all five imputation density profiles against the shaded baseline distribution. Mean and median curves produce narrow, sharp mode spikes around 28–30 years, while constant zero imputation exhibits an artificial spike at 0. In contrast, the KNN and Iterative curves display broader contours that adhere closely to the original density profile. Both multivariate curves rise moderately between 25 and 35 years, reflecting natural central tendency without creating unphysical spikes.
+</p>
+
+<h3>7.11 KNN Compared with Mean and Median Imputation</h3>
+
+<div class="figure-container">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/missing_fig4_knn_vs_basic.png" alt="Figure 4: KNN vs Basic Imputations">
+  <div class="caption">Figure 4: KNN imputation compared with mean and median imputation</div>
+</div>
+
+<p>
+Figure 4 directly isolates KNN against univariate central tendency filling. While mean and median imputations collapse variance into an artificial mode spike, the KNN density curve remains smooth and faithful to the ground-truth distribution. By borrowing localized strength from nearest neighbors, KNN preserves natural biological dispersion.
+</p>
+
+<!-- ================= PAGE 14 ================= -->
+<div class="page-break"></div>
+
+<h3>7.12 Effect of Imputation on Feature Relationships</h3>
+<p>
+Table 12 documents pairwise correlation coefficients between <code>age</code> and companion features, while Figure 5 contrasts full correlation heatmaps between raw data and iterative imputed data.
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Method</th>
+      <th>pclass</th>
+      <th>fare</th>
+      <th>sibsp</th>
+      <th>parch</th>
+      <th>survived</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Original</td><td>&minus;0.369</td><td>0.096</td><td>&minus;0.308</td><td>&minus;0.189</td><td>&minus;0.077</td></tr>
+    <tr><td>Mean</td><td>&minus;0.331</td><td>0.092</td><td>&minus;0.233</td><td>&minus;0.179</td><td>&minus;0.070</td></tr>
+    <tr><td>Median</td><td>&minus;0.340</td><td>0.097</td><td>&minus;0.233</td><td>&minus;0.172</td><td>&minus;0.065</td></tr>
+    <tr><td>Constant (0)</td><td>&minus;0.361</td><td>0.136</td><td>&minus;0.185</td><td>&minus;0.049</td><td>0.011</td></tr>
+    <tr><td>KNN (k=3)</td><td>&minus;0.385</td><td>0.109</td><td>&minus;0.195</td><td>&minus;0.172</td><td>&minus;0.095</td></tr>
+    <tr><td>Iterative</td><td>&minus;0.405</td><td>0.092</td><td>&minus;0.380</td><td>&minus;0.220</td><td>&minus;0.080</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 12: Correlation of age with other columns after each imputation method</div>
+
+<div class="figure-container">
+  <img src="/Users/uzair/academic-codebase📘/Semester-5 🎓/Lab-Codes 🧪/ML Lab/lab 5/assets/missing_fig5_correlation_matrices.png" alt="Figure 5: Correlation Matrices">
+  <div class="caption">Figure 5: Correlation matrix of the original data (left) and the Iterative imputed data (right)</div>
+</div>
+
+<ul>
+  <li><strong>Correlation Attenuation in Univariate Methods:</strong> Imputing identical constants introduces uncorrelated noise, weakening natural associations (e.g., <code>age</code> vs. <code>sibsp</code> attenuates from &minus;0.308 to &minus;0.233 under mean filling).</li>
+  <li><strong>Severe Sign Reversal under Constant Zero:</strong> Constant filling alters the correlation between <code>age</code> and <code>survived</code> from &minus;0.077 to +0.011, introducing deceptive trends.</li>
+  <li><strong>Correlation Behavior under KNN:</strong> KNN maintains correlation fidelity for <code>pclass</code> (&minus;0.385 vs &minus;0.369) and <code>parch</code> (&minus;0.172 vs &minus;0.189), but degrades <code>sibsp</code> correlation to &minus;0.195.</li>
+  <li><strong>Correlation Reinforcement under Iterative MICE:</strong> Because Iterative imputation models age via linear regression, it intensifies existing linear associations (<code>age</code>-<code>pclass</code> strengthens to &minus;0.405, <code>age</code>-<code>sibsp</code> to &minus;0.380). As shown in Figure 5, all non-age correlations remain completely untouched.</li>
+</ul>
+
+<!-- ================= PAGE 15 ================= -->
+<div class="page-break"></div>
+
+<h3>7.13 Convergence of the Iterative Imputer</h3>
+<p>
+Although configured with <em>max_iter=10</em>, the imputer's internal attribute <code>n_iter_</code> indicates convergence after exactly <strong>2 iterations</strong>. To examine sensitivity to iteration limits, the imputer was refitted across multiple values of <em>max_iter</em> (Table 13).
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>max_iter</th>
+      <th>Imputed mean</th>
+      <th>Imputed std</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>27.7644</td><td>9.5203</td></tr>
+    <tr><td>2</td><td>27.7644</td><td>9.5203</td></tr>
+    <tr><td>3</td><td>27.7644</td><td>9.5203</td></tr>
+    <tr><td>5</td><td>27.7644</td><td>9.5203</td></tr>
+    <tr><td>10</td><td>27.7644</td><td>9.5203</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 13: Imputed age statistics for different values of max_iter</div>
+
+<p>
+The imputed statistics are completely invariant across iteration settings. Rapid convergence occurs because <code>age</code> is the only incomplete numerical feature: once estimated against complete predictors during the initial pass, no secondary numerical dependencies remain to trigger cyclical adjustments. The <code>ConvergenceWarning</code> emitted at <em>max_iter=1</em> merely reflects premature termination before tolerance checks, carrying no practical significance.
+</p>
+
+<h3>7.14 Checking for Impossible Values</h3>
+<p>
+Because linear regression models lack inherent physical bounds, Iterative Imputation generated <strong>seven impossible negative ages</strong> (minimum: &minus;5.07 years). Setting <code>min_value=0</code> clips predictions to plausible boundaries (Table 14).
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Version</th>
+      <th>Negative ages</th>
+      <th>Minimum age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Iterative (default)</td><td>7</td><td>&minus;5.07</td></tr>
+    <tr><td>Iterative (min_value=0)</td><td>0</td><td>0.00</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 14: Negative ages before and after setting min_value=0</div>
+
+<p>
+Enforcing <code>min_value=0</code> successfully eliminates all negative anomalies. While an age of exactly 0.00 remains slightly artificial (the youngest observed infant is 0.42 years), bounded regression protects downstream algorithms from severe domain errors.
+</p>
+
+<h3>7.15 Accuracy of All Techniques</h3>
+<p>
+Logistic Regression classifiers were evaluated across all data variants under an identical 80/20 train-test partition (Table 15).
+</p>
+
+<!-- ================= PAGE 16 ================= -->
+<div class="page-break"></div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Technique</th>
+      <th>Train rows</th>
+      <th>Test rows</th>
+      <th>Accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Complete Case Analysis</td><td>145</td><td>37</td><td>0.7297</td></tr>
+    <tr><td>Mean Imputation</td><td>712</td><td>179</td><td>0.7374</td></tr>
+    <tr><td>Median Imputation</td><td>712</td><td>179</td><td>0.7374</td></tr>
+    <tr><td>Constant (0) Imputation</td><td>712</td><td>179</td><td>0.7151</td></tr>
+    <tr><td>KNN Imputation</td><td>712</td><td>179</td><td>0.7598</td></tr>
+    <tr><td>Iterative Imputation</td><td>712</td><td>179</td><td>0.7598</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 15: Logistic Regression accuracy for all techniques (notebook output)</div>
+
+<p>
+Across the 179 test records shared by all imputation methods, KNN and Iterative Imputation achieve the highest accuracy (0.7598), outperforming mean and median substitution (0.7374), which in turn exceed constant zero filling (0.7151). Complete Case Analysis yields 0.7297 on its heavily truncated 37-instance test partition. These rankings directly mirror distribution fidelity: methods preserving feature covariance maximize predictive performance.
+</p>
+
+<h3>7.16 Leakage-Safe Comparison Using Pipelines</h3>
+<p>
+In the preceding benchmarks, imputers were fitted on the full dataset, permitting information from the test partition and target labels to influence feature transformations. To enforce strict evaluation rigor, preprocessing was encapsulated within scikit-learn <code>Pipeline</code> objects fitted solely on training splits (Table 16).
+</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Pipeline</th>
+      <th>Test accuracy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Simple (Median)</td><td>0.7374</td></tr>
+    <tr><td>KNN (k=3)</td><td>0.7430</td></tr>
+    <tr><td>Iterative (min_value=0)</td><td>0.7486</td></tr>
+  </tbody>
+</table>
+<div class="caption">Table 16: Test accuracy of the leakage-safe pipelines</div>
+
+<p>
+Under leak-free evaluation, Iterative Imputation achieves the highest accuracy (0.7486), followed by KNN (0.7430) and Median Imputation (0.7374). The modest performance margin (representing 1 to 2 correctly classified passengers) and the reduction from pre-split scores (0.7598) demonstrate that earlier uncontained workflows yielded slightly optimistic estimates due to subtle test set contamination. Rigorous modeling mandates embedding imputation inside pipeline constructs.
+</p>
+
+<!-- ================= PAGE 17 ================= -->
+<div class="page-break"></div>
+
+<h2>8. Observations</h2>
+<ol>
+  <li><strong>Sample Size Preservation:</strong> Complete Case Analysis discards 79.6% of the dataset (collapsing sample size from 891 to 182 rows), whereas all imputation strategies preserve the entire 891 records. Univariate methods assign a single identical value to all 177 missing entries, while KNN and Iterative Imputation generate 59 and 94 distinct, personalized values, respectively.</li>
+  <li><strong>Distribution Integrity:</strong> Mean and median filling compress standard deviation from 14.53 down to ~13.00, introducing artificial mode spikes. Constant zero replacement creates an unphysical spike at 0, while KNN (std = 13.56) and Iterative Imputation (std = 13.70) retain natural distribution spread.</li>
+  <li><strong>Preservation of Inter-Feature Covariance:</strong> Univariate methods dilute correlations, constant filling distorts relationship signs, KNN preserves class associations, and Iterative regression accentuates linear feature dependencies.</li>
+  <li><strong>Rapid Convergence:</strong> The Iterative Imputer converged in just 2 iterations due to isolated numerical missingness in <code>age</code>.</li>
+  <li><strong>Predictive Utility:</strong> Multivariate imputers deliver superior classification accuracy (0.7598 uncontained; 0.7486 in leak-free pipelines), establishing clear performance advantages over data deletion and constant filling.</li>
+</ol>
+
+<h2>9. Result</h2>
+<p>
+Missing values in the Titanic dataset were localized to four features: <code>age</code> (177 missing, 19.9%), <code>deck</code> (688 missing, 77.2%), <code>embarked</code> (2 missing, 0.2%), and <code>embark_town</code> (2 missing, 0.2%). Complete Case Analysis discarded 709 records (79.6%), leaving a non-representative sub-sample dominated by first-class survivors (86% vs 24% baseline). Categorical gaps were effectively mitigated using mode substitution (port variables) and sentinel categorization ("Unknown" for cabin deck). For numerical age values, multivariate modeling via KNN and bounded Iterative Imputation maintained natural feature variance (std 13.56 and 13.70 vs. 14.53 raw) and avoided artificial mode spikes. Seven anomalous negative predictions in Iterative regression were resolved via <code>min_value=0</code>. Classification benchmarks confirmed the superiority of multivariate methods, achieving 0.7598 accuracy in global splits and 0.7486 in leak-free pipelines, outperforming median filling (0.7374), constant replacement (0.7151), and listwise deletion (0.7297).
+</p>
+
+<h2>10. Conclusion</h2>
+<p>
+Selecting an appropriate missing-data strategy fundamentally influences dataset dimensionality, feature distributions, and covariate dependencies. Listwise deletion is viable only under negligible, completely random missingness; when data loss is substantial, deletion induces severe selection bias. Univariate imputation provides a quick baseline but distorts variance and attenuates correlations. Multivariate approaches—specifically KNN and MICE Iterative Imputation—generate context-aware estimates that safeguard statistical distributions, though domain bounds (such as non-negative constraints) must be enforced. Categorical and numerical attributes require tailored treatments.
+</p>
+
+<!-- ================= PAGE 18 ================= -->
+<div class="page-break"></div>
+
+<p>
+Finally, missing data imputation must be executed within cross-validation pipelines following train-test partitioning. Fitting imputers globally leaks test partition distributions and label associations into training workflows, inflating performance expectations. Encapsulating preprocessing inside scikit-learn <code>Pipeline</code> objects guarantees methodological integrity and authentic model generalization.
+</p>
+
+<h2>11. Discussion Questions</h2>
+
+<div class="question-block">
+  <div class="question-title">Q1. What are the drawbacks of complete case analysis?</div>
+  <ul>
+    <li><strong>Substantial Information Loss:</strong> Discarding all records with any missing attribute dramatically contracts sample volume. In our Titanic analysis, 79.6% of data was purged, primarily due to cabin deck gaps.</li>
+    <li><strong>Severe Selection Bias:</strong> If missingness is not Missing Completely at Random (MCAR), surviving records misrepresent the population. Complete cases in the Titanic data exhibited an 86% first-class proportion and a 68% survival rate, compared to 24% and 38% in the raw dataset.</li>
+    <li><strong>Impaired Model Stability:</strong> Training and evaluating on heavily diminished datasets (145 train, 37 test rows) produces unstable parameters and unreliable performance metrics.</li>
+    <li><strong>Dimensional Vulnerability:</strong> As feature counts expand, the probability of an observation containing at least one unobserved attribute approaches certainty.</li>
+    <li><strong>Inoperability during Deployment:</strong> A model requiring complete observations fails when deployed against real-world inputs containing missing values.</li>
+  </ul>
+</div>
+
+<div class="question-block">
+  <div class="question-title">Q2. How does KNN Imputer differ from mean or median imputation?</div>
+  <p>
+  Univariate mean or median imputation replaces every missing entry with a single global statistic, ignoring all companion features. In contrast, the KNN Imputer identifies the <em>k</em> nearest neighbors in multidimensional space and computes a localized, distance-weighted estimate. Key differences include:
+  </p>
+  <ul>
+    <li><strong>Diverse Imputed Values:</strong> KNN produced 59 distinct imputed age values, whereas mean and median assign a single repeated number to all 177 missing entries.</li>
+    <li><strong>Variance &amp; Covariance Preservation:</strong> KNN preserved feature variance (std = 13.56 vs 13.00 for mean) and maintained class correlation (&minus;0.385 vs &minus;0.331).</li>
+    <li><strong>Computational Overhead &amp; Scale Sensitivity:</strong> KNN requires computing pairwise distances across all records, making it computationally intensive and sensitive to feature scaling (e.g., unbounded fare values).</li>
+  </ul>
+</div>
+
+<div class="question-block">
+  <div class="question-title">Q3. In what scenarios is Iterative Imputer preferred?</div>
+  <ul>
+    <li>When features exhibit strong linear or non-linear correlations, allowing unobserved values to be predicted from companion attributes.</li>
+    <li>When missingness spans multiple attributes simultaneously, enabling round-robin regression models to iteratively refine estimates.</li>
+    <li>When data satisfies the Missing at Random (MAR) assumption, where missingness depends on observed features.</li>
+  </ul>
+</div>
+
+<!-- ================= PAGE 19 ================= -->
+<div class="page-break"></div>
+
+<ul>
+  <li>When sample sizes are sufficiently large to support stable multivariate regression estimators without overfitting.</li>
+</ul>
+<p>
+<em>Application Precautions:</em> Practitioners must enforce physical domain bounds (such as <code>min_value=0</code> for age) to prevent unbounded linear extrapolation from producing negative estimates, and recognize that regression-based imputation tends to amplify existing collinearities.
+</p>
+
+<div class="question-block">
+  <div class="question-title">Q4. Why is it important to treat categorical and numerical missing data differently?</div>
+  <p>Qualitative and quantitative features possess fundamentally distinct mathematical properties:</p>
+  <ul>
+    <li><strong>Mathematical Invalidity:</strong> Arithmetic operations (mean, variance, Euclidean distance) are meaningless on qualitative labels (e.g., <code>deck</code> letters or ports of embarkation). Categorical gaps must be resolved via mode substitution or explicit categorization.</li>
+    <li><strong>Statistical Treatment:</strong> Numerical data can be addressed through parametric or non-parametric continuous estimators (mean, median, regression, KNN) selected based on distribution symmetry.</li>
+    <li><strong>Informational Content of Missingness:</strong> For qualitative features with massive missingness (such as <code>deck</code> at 77%), mode imputation fabricates non-existent facts, whereas creating an "Unknown" level preserves non-response as a predictive indicator.</li>
+    <li><strong>Algorithm Prerequisites:</strong> Distance-based and regression imputers require numerical inputs, necessitating dedicated qualitative encoding or separate handling.</li>
+  </ul>
+</div>
+
+<div class="question-block">
+  <div class="question-title">Q5. What are some risks of over-imputation?</div>
+  <ul>
+    <li><strong>Fabrication of Synthetic Information:</strong> Imputing features dominated by missingness (such as 77% missing cabin decks) invents data never collected in reality.</li>
+    <li><strong>Variance Compression &amp; Deceptive Precision:</strong> Univariate imputation shrinks sample variance (depressing age std from 14.53 to 13.00), artificially inflating model confidence.</li>
+    <li><strong>Distortion of Covariance Structures:</strong> Constant replacement introduced sign reversals in the <code>age</code>-<code>survived</code> relationship (+0.011 vs &minus;0.077).</li>
+    <li><strong>Generation of Out-of-Domain Values:</strong> Unbounded regression produced seven negative passenger ages (&minus;5.07 years).</li>
+    <li><strong>Data Contamination &amp; Optimism Bias:</strong> Imputing across entire datasets prior to partitioning leaks test distributions and target labels, yielding deceptive validation performance (0.7598 vs. 0.7486 leak-free).</li>
+    <li><strong>Suppression of Informative Missingness:</strong> In many operational domains, the absence of data is itself highly predictive; indiscriminately filling all gaps strips away critical diagnostic signals.</li>
+  </ul>
+</div>
+
+</body>
+</html>
