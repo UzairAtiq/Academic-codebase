@@ -1,0 +1,325 @@
+natural language processing allows computers to understand human language
+tokenization splits text into individual words or subword tokens
+lemmatization reduces words to their base dictionary lemma form
+stemming removes word affixes to produce a rough root word
+stop words are frequent words filtered out during text cleaning
+word embeddings represent vocabulary tokens as dense numerical vectors
+continuous bag of words predicts the target word from context words
+skip gram predicts surrounding context words given a target word
+glove creates word representations using global word co occurrence statistics
+fasttext decomposes words into character n grams to represent subwords
+cosine similarity measures the angle between two word embedding vectors
+semantic similarity reflects how closely related two words are in meaning
+out of vocabulary words pose a challenge for traditional word embeddings
+fasttext handles unseen words by combining character subword representations
+text preprocessing improves the quality of downstream machine learning models
+part of speech tagging labels each word with its grammatical category
+named entity recognition identifies entities such as people and locations
+syntactic parsing analyzes the grammatical structure of sentences
+sentiment analysis determines whether a sentence expresses positive or negative emotion
+language models predict the probability of subsequent words in a sequence
+n gram models estimate word probabilities using immediate preceding history
+sequence to sequence models map input sequences to target sequences
+attention mechanisms allow models to focus on important words in a sentence
+transformers use self attention to process text tokens in parallel
+bert learns bidirectional contextual representations from unlabelled text
+word analogies illustrate linear relationships learned in vector spaces
+king minus man plus woman produces vector close to queen
+dense vectors capture semantic relationships better than sparse one hot vectors
+one hot encoding suffers from high dimensionality and lack of semantic meaning
+distributional hypothesis states words that occur in similar contexts have similar meanings
+lexical semantics studies the meaning of individual words in natural language
+polysemy occurs when a single word possesses multiple related meanings
+synonyms are words with identical or very close semantic meanings
+antonyms are words that have opposite meanings in a given language
+wordnet is a large lexical database connecting words with semantic relations
+corpus linguistics analyzes language patterns from large collections of real text
+bag of words represents documents as word frequency counts ignoring order
+term frequency inverse document frequency weights words by their distinctiveness
+topic modeling algorithms identify latent themes across large document collections
+latent dirichlet allocation discovers abstract topics in text corpora
+machine translation translates phrases across different human languages automatically
+speech recognition systems transcribe spoken acoustic signals into written text
+text summarization creates concise summaries from long articles and reports
+question answering systems find precise answers in large knowledge bases
+dialogue systems interact naturally with human users in conversational turns
+information extraction extracts structured facts from unstructured natural language
+coreference resolution links pronouns to the specific entities they reference
+dependency parsing maps grammatical relationships between governing and dependent words
+morphological analysis breaks down words into their basic morphemes
+vector spaces place semantically related words close together geometrically
+gensim provides efficient implementations of word2vec fasttext and document modeling
+context windows determine which surrounding words influence vector learning
+subword tokenization handles rare words and compound terms effectively
+character embeddings capture morphological similarities across prefixes and suffixes
+pre trained word embeddings can be transferred to downstream classification tasks
+word vector dimensions typically range from fifty to three hundred real numbers
+cosine similarity ranges between minus one and positive one in vector comparisons
+euclidean distance measures the physical geometric distance between embedding points
+dot product measures vector alignment scaled by their respective magnitudes
+word embeddings preserve syntactic regularities such as plural forms and verb tenses
+gender bias in embeddings reflects historical stereotypes in training text
+debiasing algorithms aim to remove undesirable demographic bias from word vectors
+distributed representations distribute semantic concepts across multiple continuous dimensions
+context words provide surrounding clues to infer the meaning of ambiguous words
+unsupervised text representations learn linguistic structure without manual labels
+machine learning enables systems to learn from experience without explicit programming
+supervised learning algorithms train on labeled pairs of inputs and outputs
+unsupervised learning discovers hidden patterns in unlabeled training data
+reinforcement learning agents learn policies by maximizing cumulative rewards
+linear regression predicts continuous numerical outcomes from input features
+logistic regression models the probability of discrete class outcomes
+decision trees partition feature space using hierarchical if then rules
+random forests aggregate predictions from multiple uncorrelated decision trees
+support vector machines find optimal hyperplanes that maximize class margins
+k nearest neighbors classifies samples based on distance to known neighbors
+clustering algorithms group similar data instances into distinct clusters
+k means clustering partitions data into k centroids iteratively
+hierarchical clustering builds tree structures representing nested data groups
+principal component analysis reduces dimensionality while preserving data variance
+gradient descent optimizes objective loss functions by updating model parameters
+learning rate determines the step size taken during gradient descent optimization
+stochastic gradient descent computes loss gradients using single data batches
+mini batch gradient descent balances stability and computational speed
+overfitting occurs when a model memorizes training noise instead of patterns
+underfitting occurs when a model is too simple to capture data patterns
+regularization techniques prevent overfitting by penalizing large model weights
+cross validation evaluates model generalization across multiple data splits
+confusion matrix summarizes classification performance across actual and predicted classes
+precision measures the proportion of true positive predictions among positive calls
+recall measures the proportion of true positives detected out of actual positives
+f1 score represents the harmonic mean between precision and recall metrics
+roc curve plots the true positive rate against the false positive rate
+feature engineering extracts informative attributes from raw input data
+feature scaling normalizes numerical attributes to comparable standard ranges
+hyperparameter tuning optimizes external configuration settings for machine learning
+grid search exhaustively tests predefined combinations of hyperparameter values
+random search samples hyperparameter values randomly from continuous distributions
+bias variance tradeoff balances model simplicity against expressive flexibility
+high bias causes models to consistently miss relevant trends in training data
+high variance makes models overly sensitive to small fluctuations in training samples
+ensemble learning combines multiple weak learners to build strong predictors
+gradient boosting sequentially builds trees that correct previous errors
+adaboost assigns higher weights to misclassified training instances in each round
+loss functions quantify the numerical discrepancy between predictions and targets
+mean squared error loss evaluates continuous regression prediction errors
+cross entropy loss penalizes incorrect probability predictions in classification
+optimizers such as adam adapt individual learning rates for every model parameter
+data augmentation artificially expands training diversity by applying realistic transformations
+data cleaning resolves missing values duplicate entries and formatting errors
+exploratory data analysis visualizes dataset distributions before statistical modeling
+normalization scales numerical feature values into the range between zero and one
+standardization transforms features to have zero mean and unit standard deviation
+stratified sampling preserves original class proportions across training and test splits
+class imbalance requires resampling techniques or weighted objective functions
+synthetic minority oversampling generates artificial examples for minority classes
+feature selection removes irrelevant or redundant attributes from input datasets
+model evaluation ensures algorithms perform reliably before production deployment
+generalization capability measures how well algorithms predict unseen future instances
+inductive bias represents the set of assumptions an algorithm uses to make predictions
+training sets provide examples used to adjust internal model weights directly
+validation sets assist in tuning hyperparameters and selecting optimal architectures
+test sets evaluate the final performance of trained models on completely fresh data
+early stopping terminates iterative model training when validation error begins rising
+cost functions provide mathematical criteria that optimization algorithms seek to minimize
+numerical optimization seeks optimal variable assignments using mathematical gradients
+convex optimization guarantees that any discovered local minimum is a global minimum
+learning curves visualize training and validation loss across successive epochs
+model calibration ensures predicted probabilities accurately match observed empirical frequencies
+offline evaluation measures algorithmic accuracy using historical benchmark datasets
+online evaluation assesses model performance with live user traffic and ab testing
+deep learning employs artificial neural networks with multiple processing layers
+artificial neural networks are inspired by biological nervous systems in the brain
+perceptrons represent fundamental computational units in artificial neural networks
+multilayer perceptrons consist of an input layer hidden layers and output layer
+activation functions introduce nonlinear transformations into neural network layers
+rectified linear unit activation outputs zero for negative inputs and identity otherwise
+sigmoid activation maps input numbers to probabilities between zero and one
+softmax activation normalizes raw model logits into a valid probability distribution
+backpropagation calculates error gradients with respect to each model weight
+chain rule of calculus enables gradient computation across multilayer networks
+convolutional neural networks process grid structured data such as digital images
+pooling layers reduce spatial resolution and computation in convolutional networks
+recurrent neural networks maintain recurrent states to process sequential data
+long short term memory networks mitigate vanishing gradients using gating units
+gated recurrent units provide efficient sequential modeling with simplified gates
+dropout randomly deactivates neural connections during training to regularize models
+batch normalization stabilizes deep network training by standardizing layer inputs
+layer normalization standardizes activations across feature dimensions for each sample
+weight initialization strategies ensure stable gradient flow during early training
+xavier initialization scales initial weights according to input and output dimensions
+he initialization scales initial weights specifically for rectified linear units
+vanishing gradients hinder weight updates in deep layers of recurrent networks
+exploding gradients cause numerical instability and can be controlled with gradient clipping
+transfer learning adapts knowledge learned from large datasets to new tasks
+fine tuning updates pretrained network weights on specialized domain data
+embedding layers map categorical word indices into dense continuous vector spaces
+autoencoders learn compressed latent representations by reconstructing input data
+generative adversarial networks train generator and discriminator networks together
+latent vector representations encode high level abstract data properties
+deep learning models require large volumes of data and computational power
+graphics processing units accelerate parallel tensor operations in deep learning
+residual connections allow gradients to flow directly through skip connections
+residual networks train very deep architectures without suffering from degradation
+self attention computes relational weights between all pairs of input sequence tokens
+multi head attention captures diverse relational patterns from multiple projection spaces
+positional encoding injects sequential order information into transformer input tokens
+masked language modeling trains models to predict randomly hidden words in sentences
+bidirectional models condition on context from both left and right sentence directions
+autoregressive language models generate text by predicting one token at a time
+prompt engineering designs input queries to elicit desired responses from models
+few shot learning enables models to generalize from a handful of demonstrated examples
+zero shot learning classifies novel categories without explicit training instances
+knowledge distillation compresses large teacher models into compact student networks
+pruning removes redundant neural network weights to reduce inference latency
+quantization reduces numerical precision of model weights to save memory and power
+neural architecture search automates the design of optimal deep network topologies
+gradient checking verifies numerical accuracy of analytical gradient implementations
+momentum accelerates gradient descent vectors in the direction of persistent descent
+learning rate schedules decay step sizes over training to fine tune parameter values
+loss landscapes illustrate the geometrical curvature of objective functions in space
+saddle points possess zero gradients but represent neither local minima nor maxima
+stochastic regularization adds controlled noise during training to improve robustness
+adversarial examples are slightly perturbed inputs designed to fool neural classifiers
+adversarial training hardens models by including crafted adversarial samples in training
+contrastive learning brings representations of similar pairs closer while pushing dissimilar apart
+self supervised learning generates supervision signals directly from raw unlabeled data
+representation learning discovers meaningful feature spaces directly from unstructured inputs
+feature maps in convolutional networks detect visual patterns such as edges and textures
+receptive fields determine the input region influencing a particular neuron activation
+stride defines the step distance a convolutional filter moves across input grids
+padding preserves spatial dimensions of input feature maps during convolution operations
+tensor operations perform multidimensional linear algebra calculations efficiently
+forward pass propagates input features through model layers to produce final predictions
+backward pass calculates loss derivatives across layers in reverse order for optimization
+epoch denotes one complete traversal through all training examples in a dataset
+computer science studies computation information algorithms and computer architecture
+algorithms provide step by step instructions for solving specific computational problems
+time complexity quantifies the execution time required as input size grows
+space complexity measures the memory required by an algorithm during execution
+big o notation describes the asymptotic upper bound of algorithm growth rates
+arrays store contiguous elements accessible via zero based integer indices
+linked lists organize elements into nodes connected by sequential memory pointers
+stacks follow last in first out discipline for storing and retrieving elements
+queues operate according to first in first out principles in task scheduling
+hash tables provide fast constant time key value lookups using hashing functions
+binary search trees maintain sorted keys for efficient lookup insertion and deletion
+balanced search trees guarantee logarithmic time complexity for dynamic set operations
+graph data structures represent entities as nodes and relationships as edges
+breadth first search traverses graph layers using a first in first out queue
+depth first search explores graph paths deeply using recursive backtracking
+dijkstra algorithm discovers shortest paths from source nodes in weighted graphs
+a star search algorithm uses heuristics to find optimal paths efficiently
+dynamic programming solves complex problems by combining solutions to subproblems
+memoization caches expensive function results to prevent redundant subproblem computation
+tabulation builds solutions iteratively using bottom up dynamic programming tables
+divide and conquer divides problems into independent subproblems before combining answers
+greedy algorithms make locally optimal choices at each decision step
+sorting algorithms rearrange collections into monotonic numerical or alphabetical order
+quicksort partitions arrays around selected pivot elements to sort in place
+mergesort divides arrays into halves and merges sorted lists efficiently
+heapsort maintains binary heap invariants to sort array elements in place
+binary search locates target items in sorted arrays within logarithmic time
+linear search inspects each item sequentially until finding target values
+recursion occurs when functions call themselves to resolve smaller problem instances
+base cases in recursion terminate successive calls and prevent infinite execution
+operating systems coordinate computer hardware resources and user software execution
+compilers translate high level programming code into executable machine instructions
+interpreters execute source code instructions directly without prior compilation
+virtual memory gives processes the illusion of contiguous private address spaces
+concurrency enables multiple execution threads to make progress over overlapping intervals
+deadlocks happen when concurrent threads hold resources while waiting on each other
+databases store structured records for reliable concurrent querying and storage
+relational databases organize data into tables governed by primary and foreign keys
+indexes improve database query speeds by maintaining auxiliary sorted search structures
+structured query language allows developers to retrieve and modify relational data
+acid properties guarantee atomicity consistency isolation and durability in transactions
+distributed systems coordinate independent network computers to achieve shared goals
+cap theorem states distributed systems must trade off consistency against availability
+cloud computing delivers on demand computing resources over global internet connections
+parallel computing splits heavy computations across multiple processing cores
+computer networks route data packets using standard communication protocols
+transmission control protocol guarantees reliable ordered delivery of packet streams
+internet protocol handles packet routing and physical addressing across global nodes
+cryptography secures digital communication against unauthorized inspection and modification
+public key encryption uses mathematical key pairs for secure data exchange
+hash functions map arbitrary input data to fixed length digest strings deterministically
+clean code adheres to standard conventions and maintains readability for developers
+version control systems track changes made to software codebases over time
+git enables branching merging and collaborative software version management
+software architecture organizes software modules into clean maintainable structures
+modular programming separates system functions into independent interchangeable modules
+unit testing verifies individual software components function as designed
+continuous integration automates testing and building whenever code changes occur
+refactoring improves internal software design without altering external functional behavior
+design patterns provide reusable solutions to commonly occurring software architecture problems
+object oriented programming organizes code around data objects and class abstractions
+functional programming treats computation as evaluation of pure mathematical functions
+immutable data structures prevent unintended state mutations across program routines
+polymorphism allows different software classes to respond to shared method calls
+encapsulation hides internal implementation details behind clean public interfaces
+linear algebra provides mathematical foundations for modern machine learning algorithms
+vectors represent mathematical entities possessing magnitude and geometric direction
+matrices organize numbers into rectangular grids of rows and columns
+matrix multiplication computes linear combinations of vectors across dimensions
+dot product calculates the scalar projection between two multidimensional vectors
+euclidean distance measures the straight line separation between vector points
+cosine similarity measures directional alignment between vectors independent of magnitude
+eigenvalues and eigenvectors describe invariant directions during linear transformations
+singular value decomposition factorizes matrices into constituent geometric components
+probability theory models uncertain outcomes and stochastic natural processes
+random variables assign numerical values to experimental outcomes in sample spaces
+probability distributions describe likelihoods associated with variable values
+normal distribution forms a symmetric bell shaped probability curve in statistics
+mean represents the arithmetic average value of numerical observations
+variance quantifies the spread of data observations around their mean
+standard deviation measures the dispersion of values in original measurement units
+covariance indicates the joint directional variability of two random variables
+correlation measures the strength and direction of linear associations between variables
+bayes theorem updates hypothesis probabilities upon observing new conditioning evidence
+maximum likelihood estimation finds parameter values that maximize data likelihood
+calculus provides tools for computing rates of change and cumulative quantities
+derivatives measure the sensitivity of functions to small input perturbations
+partial derivatives quantify function rates of change along individual coordinates
+gradient vectors point toward directions of greatest function increase in space
+chain rule decomposes derivatives of composite mathematical functions systematically
+numerical methods compute approximate mathematical solutions where analytical formulas fail
+information theory quantifies uncertainty and information content in random signals
+entropy measures the average amount of information produced by stochastic sources
+kullback leibler divergence calculates difference between two probability distributions
+data science extracts actionable business insights from complex structured data
+exploratory data analysis visualizes dataset distributions before statistical modeling
+big data platforms process massive data volumes across clustered computing machines
+model interpretability helps human practitioners understand automated decisions
+ethical artificial intelligence requires fair unbiased and transparent algorithms
+algorithmic bias can arise from historical prejudices embedded in training corpora
+privacy preserving machine learning protects sensitive personal data during training
+differential privacy injects calibrated noise to protect individual user confidentiality
+federated learning trains shared models across decentralized devices without sharing raw data
+explainable artificial intelligence clarifies reasons behind automated algorithmic predictions
+fairness metrics ensure machine learning predictions do not disadvantage protected groups
+data governance establishes accountability policies for data handling security and privacy
+reproducibility in science requires sharing code data and training parameters
+open source libraries accelerate scientific research and software engineering
+distributed word representations embed semantic meaning into dense continuous vectors
+dense embeddings condense linguistic information into compact continuous coordinates
+contextual embeddings adjust word representations depending on surrounding sentence tokens
+word analogies demonstrate that vector differences capture coherent semantic concepts
+semantic spaces exhibit geometric properties reflecting human conceptual relationships
+fasttext captures subword morphological patterns using character level n grams
+word2vec skip gram focuses on predicting surrounding contexts for each target word
+cbow architecture averages context word vectors to predict target center words
+glove leverages global word co occurrence statistics to produce balanced embeddings
+cosine similarity between normalized vectors simplifies to their dot product computation
+high dimensional vector spaces allow rich semantic distinctions across vocabulary tokens
+nearest neighbor search finds words with highest cosine similarity in embedding space
+semantic distance reflects conceptual divergence between unrelated vocabulary items
+word embeddings serve as foundational input features for downstream nlp applications
+text categorization classifies documents into predefined thematic subject categories
+sequence labeling assigns categorical labels to each token in a sentence
+vector evaluation compares learned representations against human semantic similarity judgments
+word similarity benchmarks evaluate how accurately embeddings mirror human intuition
+distributed representations avoid the curse of dimensionality seen in sparse representations
+language understanding requires capturing both semantic meaning and grammatical relationships
+continuous representations allow gradient based optimization across all model parameters
+deep representations learn hierarchical features ranging from simple words to complex concepts
